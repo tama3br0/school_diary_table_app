@@ -1,0 +1,21 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV.fetch("MYSQL_USER") { 'school_diary_table_app' } %>
+  password: <%= ENV.fetch("MYSQL_PASSWORD") { 'myapp_password' } %>
+  host: <%= ENV.fetch("MYSQL_HOST") { 'db' } %>
+
+development:
+  <<: *default
+  database: school_diary_table_app_development
+
+test:
+  <<: *default
+  database: school_diary_table_app_test
+
+production:
+  <<: *default
+  database: school_diary_table_app_production
+  username: <%= ENV["MYSQL_USER"] %>
+  password: <%= ENV["MYSQL_PASSWORD"] %>
