@@ -3,7 +3,7 @@ default: &default
   encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: <%= ENV.fetch("MYSQL_USER") { 'school_diary_table_app' } %>
-  password: <%= ENV.fetch("MYSQL_PASSWORD") { 'myapp_password' } %>
+  password: <%= ENV.fetch("MYSQL_PASSWORD") { 'password' } %>
   host: <%= ENV.fetch("MYSQL_HOST") { 'db' } %>
 
 development:

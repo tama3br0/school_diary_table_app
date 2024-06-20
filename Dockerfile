@@ -5,7 +5,7 @@ FROM registry.hub.docker.com/library/ruby:$RUBY_VERSION-slim as base
 
 WORKDIR /rails
 
-ENV RAILS_ENV="production" \
+ENV RAILS_ENV="development" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development" \
@@ -14,7 +14,7 @@ ENV RAILS_ENV="production" \
 FROM base as build
 
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libvips pkg-config libmariadb-dev libmariadb3 default-mysql-client
+    apt-get install --no-install-recommends -y build-essential git libvips pkg-config libmariadb-dev libmariadb3 default-mysql-client dos2unix
 
 # Install the correct version of bundler
 RUN gem install bundler -v '~> 2.5'
@@ -28,9 +28,7 @@ COPY . .
 
 RUN bundle exec bootsnap precompile app/ lib/
 
-RUN chmod +x bin/* && \
-    sed -i "s/\r$//g" bin/* && \
-    sed -i 's/ruby\.exe$/ruby/' bin/*
+RUN find bin -type f -exec dos2unix {} + && sed -i 's/ruby.exe$/ruby/' bin/*
 
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
@@ -55,4 +53,4 @@ USER rails:rails
 ENTRYPOINT ["docker-entrypoint"]
 
 EXPOSE 3000
-CMD ["./bin/rails", "server"]
+CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
