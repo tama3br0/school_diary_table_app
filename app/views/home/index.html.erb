@@ -1,0 +1,6 @@
+<% provide(:title, 'トップページ') %>
+<div class="login-container">
+    <img src="https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/logo.png" alt="がっこうにっき ロゴ" class="top-logo">
+    <p class="login-message">ログインをして はじめよう！</p>
+    <%= link_to 'ログイン', user_google_oauth2_omniauth_authorize_path, class: 'login-button' %>
+</div>

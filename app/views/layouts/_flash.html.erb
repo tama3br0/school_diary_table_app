@@ -1,0 +1,4 @@
+<!-- layouts/_flash.html.erb -->
+<% flash.each do |key, value| %>
+    <div class="flash <%= key %>" data-controller="flash"><%= value %></div>
+<% end %>

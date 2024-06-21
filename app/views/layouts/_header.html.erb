@@ -1,0 +1,18 @@
+<header>
+    <div class="left-section">
+        <div class="logo">
+            <%= link_to authenticated_root_path do %>
+                <img src="https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/logo.png" alt="がっこうにっきロゴ">
+            <% end %>
+        </div>
+        <div class="school-code">
+            がっこうコード: <%= school_code %>
+        </div>
+    </div>
+    <div class="right-section">
+        <% if current_user.teacher? %>
+            <%= link_to '登録児童一覧', class: 'button-link' %>
+        <% end %>
+        <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "logout-button" %>
+    </div>
+</header>

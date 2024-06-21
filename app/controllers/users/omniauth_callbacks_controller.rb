@@ -1,11 +1,23 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     def google_oauth2
-        # 成功した場合には常にlogin_success_pathにリダイレクト
-        redirect_to login_success_path
+        @user = User.from_omniauth(request.env['omniauth.auth'])
+
+        if @user.persisted?
+            if @user.additional_info_provided? #<= user.rbで定義
+                sign_in_and_redirect @user, event: :authentication
+                flash[:notice] = 'ログインしました！'
+            else
+                sign_in @user
+                redirect_to additional_info_path
+                flash[:notice] = 'データを とうろく しよう！'
+            end
+        else
+            session['devise.google_data'] = request.env['omniauth.auth'].except(:extra)
+            redirect_to new_user_registration_url, alert: 'ログインできませんでした。おうちの人にきくか、あしたがっこうでせんせいにきいてね！'
+        end
     end
 
     def failure
-        # 失敗した場合にはlogin_failure_pathにリダイレクト
         redirect_to login_failure_path
     end
 end

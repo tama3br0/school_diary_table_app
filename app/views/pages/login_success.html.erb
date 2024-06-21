@@ -1,1 +1,21 @@
-<h1>ログインに成功しました</h1>
+<% provide(:title, 'ダッシュボード') %>
+<main>
+  <div id="flash_messages">
+    <%= render 'layouts/flash' %>
+  </div>
+  <h1>ようこそ！
+    <% if @role == 'teacher' %>
+      <%= @name %>せんせい
+    <% else %>
+      <%= @grade %>ねん<%= @class_num %>くみの<%= @student_num %>ばんさん
+    <% end %>
+  </h1>
+  <ul>
+    <li class="write_diary_button"><%= link_to 'にっきをかく' %></li>
+    <li class="read_diary_button"><%= link_to 'にっきをよむ' %></li>
+    <li class="stamp_card_button"><%= link_to 'スタンプカード' %></li>
+    <% if @role == 'teacher' %>
+      <li class="show_diary_button"><%= link_to 'にっきをみる' %></li>
+    <% end %>
+  </ul>
+</main>
