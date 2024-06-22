@@ -1,4 +1,3 @@
-<!-- /app/views/diaries/show.html.erb -->
 <% provide(:title, 'にっきをよむページ') %>
 
 <div class="diary-page">
@@ -10,10 +9,19 @@
   </div>
 
   <div class="diary-text-container">
-    <% @diaries.each do |diary| %>
-      <div class="diary-text vertical-text">
-        <%= generate_diary_text_with_emotions(diary).html_safe %>
-      </div>
+    <% display_order = [4, 3, 2, 1] %>
+    <% display_order.each do |question_num| %>
+      <% diary = @diaries.find { |d| d.question_num == question_num } %>
+      <% if diary %>
+        <div class="diary-column">
+          <div class="diary-text vertical-text">
+            <%= generate_diary_text_with_emotions(diary).html_safe %>
+          </div>
+          <div class="emotion-image">
+            <%= display_emotion_image(diary).html_safe %>
+          </div>
+        </div>
+      <% end %>
     <% end %>
   </div>
 

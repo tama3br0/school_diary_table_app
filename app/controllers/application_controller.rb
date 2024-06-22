@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
     before_action :authenticate_user!, unless: :devise_controller?
     before_action :check_user_authentication
     before_action :set_user_info, if: :user_signed_in?
+    include UsersHelper
 
     private
 
@@ -44,14 +45,10 @@ class ApplicationController < ActionController::Base
     end
 
     def set_user_info
-      @user = current_user
-      if @user.grade_class.present?
-        @school_code = @user.grade_class.school_code
-        @grade = @user.grade_class.grade
-        @class_num = @user.grade_class.class_num
-        @student_num = @user.student_num
-        @role = @user.role
-        @name = @user.name
+      user_info = extract_user_info(current_user)
+      user_info.each do |key, value|
+        instance_variable_set("@#{key}", value)
       end
+      Rails.logger.info "User Info - name: #{@name}, grade: #{@grade}, class_num: #{@class_num}, student_num: #{@student_num}, role: #{@role}"
     end
 end
