@@ -1,0 +1,44 @@
+/* app/assets/stylesheets/calendar.css */
+
+/* カレンダー全体のスタイリング */
+#calendar {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  #calendar th, #calendar td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: top;
+  }
+
+  /* 日付セルのスタイリング */
+  .day {
+    color: #333;
+    position: relative;
+    height: 100px;
+    width: 100px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+  }
+
+  .day:hover {
+    background-color: #f1f1f1;
+  }
+
+  .date-number {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  /* スタンプのスタイリング */
+  .diary-stamp {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    display: block;
+  }

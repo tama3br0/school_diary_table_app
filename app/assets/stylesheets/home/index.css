@@ -5,7 +5,6 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     height: 100vh;
-    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,7 +12,7 @@ body {
     font-family: 'Arial', sans-serif;
     color: white;
     text-align: center;
-    padding-top: 80px; /* ヘッダーの高さ分のパディングを追加 */
+    margin-top: 80px; /* ヘッダーの高さ分のパディングを追加 */
 }
 
 .login-container {

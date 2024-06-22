@@ -10,10 +10,22 @@
       <%= @grade %>ねん<%= @class_num %>くみの<%= @student_num %>ばんさん
     <% end %>
   </h1>
+
+  <div id="calendar">
+    <%= month_calendar(events: @diaries) do |date, diaries_for_date| %>
+      <div class="day">
+        <div class="date-number"><%= date.day %></div>
+        <% diaries_for_date.each do |diary| %>
+          <% diary.stamps.each do |stamp| %>
+            <%= link_to image_tag(stamp.stamp_image, class: 'diary-stamp'), diary_path(diary) %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
   <ul>
     <li class="write_diary_button"><%= link_to 'にっきをかく', new_diary_path %></li>
-    <li class="read_diary_button"><%= link_to 'にっきをよむ' %></li>
-    <li class="stamp_card_button"><%= link_to 'スタンプカード' %></li>
     <% if @role == 'teacher' %>
       <li class="show_diary_button"><%= link_to 'にっきをみる' %></li>
     <% end %>

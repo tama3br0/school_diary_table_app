@@ -1,0 +1,21 @@
+<!-- /app/views/diaries/show.html.erb -->
+<% provide(:title, 'にっきをよむページ') %>
+
+<div class="diary-page">
+  <h1>にっきをよむ</h1>
+  <div class="day-navigation">
+    <%= link_to 'まえの ひ', diary_path(date: @previous_day.date), class: 'button' if @previous_day %>
+    <span class="date-field"><%= @date.strftime('%Yねん%-mがつ%-dにち') %> (<%= @date.strftime('%A').gsub('Sunday', 'にち').gsub('Monday', 'げつ').gsub('Tuesday', 'か').gsub('Wednesday', 'すい').gsub('Thursday', 'もく').gsub('Friday', 'きん').gsub('Saturday', 'ど') %>)</span>
+    <%= link_to 'つぎの ひ', diary_path(date: @next_day.date), class: 'button' if @next_day %>
+  </div>
+
+  <div class="diary-text-container">
+    <% @diaries.each do |diary| %>
+      <div class="diary-text vertical-text">
+        <%= generate_diary_text_with_emotions(diary).html_safe %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= link_to 'さいしょに もどる', authenticated_root_path, class: 'button' %>
+</div>

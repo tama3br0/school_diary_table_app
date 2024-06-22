@@ -9,5 +9,7 @@
  *= require pages/login_success
  *= require users/additional_info
  *= require diaries/new
+ *= require diaries/calendar
+ *= require diaries/show
 
  */

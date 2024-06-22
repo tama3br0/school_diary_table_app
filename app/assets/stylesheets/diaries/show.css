@@ -1,0 +1,134 @@
+/* diaries/show.css */
+.diary-page {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f8ff;
+    padding: 20px;
+    text-align: center;
+    width: 80%; /* 横幅を広く設定 */
+    max-width: 720px; /* 最大幅を設定 */
+    margin: 0 auto; /* 中央揃え */
+    margin-top: 80px;  /* 上部の余白を調整 */
+}
+
+.diary-page h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.day-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.date-field {
+    font-size: 1.2em;
+    margin: 0 15px;
+    color: #333;
+}
+
+.question-container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto; /* 左右中央揃え */
+    margin-right: auto; /* 左右中央揃え */
+}
+
+.question-container h3 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.emotions-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.emotion-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10px;
+}
+
+.emotion-item img {
+    display: block;
+    margin: 0 auto 10px;
+    width: 50px; /* 画像の大きさを50pxに固定 */
+    height: 50px; /* 画像の大きさを50pxに固定 */
+}
+
+.emotion-item input[type="radio"] {
+    display: none;
+}
+
+.emotion-item input[type="radio"]:checked + label img {
+    filter: none; /* 選択された画像はカラーに */
+}
+
+.emotion-item label {
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+.emotion-item label img {
+    display: block;
+    margin: 0 auto 10px;
+    width: 50px; /* 画像の大きさを50pxに固定 */
+    height: 50px; /* 画像の大きさを50pxに固定 */
+}
+
+.emotion-item label span {
+    display: block;
+    font-size: 0.8em;
+    color: #333;
+}
+
+.button {
+    background-color: #6ba4ff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin: 10px;
+    display: inline-block;
+}
+
+.vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-size: 1.2em;
+    line-height: 1.5em;
+    padding: 20px;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    color: #000; /* 文字の色を黒に設定 */
+    white-space: pre-line; /* 改行を反映 */
+    display: inline-block; /* インラインブロックで中央寄せ */
+    text-align: left; /* 頭ぞろえにする */
+    margin-bottom: 20px; /* 隣の文章との間隔を設定 */
+}
+
+.diary-text-container {
+    display: flex;
+    justify-content: center; /* コンテンツを中央寄せ */
+    margin-top: 20px;
+}
+
+.vertical-text img {
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px; /* 画像の大きさを20pxに固定 */
+    height: 20px; /* 画像の大きさを20pxに固定 */
+    margin-left: 5px; /* 画像とテキストの間に少し余白を追加 */
+}

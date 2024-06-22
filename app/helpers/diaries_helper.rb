@@ -1,5 +1,33 @@
-# app/helpers/diaries_helper.rb
 module DiariesHelper
+    def display_user_info(user)
+      if user.teacher?
+        "#{user.name}せんせい"
+      else
+        "#{user.grade_class.grade}ねん#{user.grade_class.class_num}くみ #{user.student_num}ばん"
+      end
+    end
+
+    def generate_diary_text_with_emotions(diary)
+      text = ""
+      questions_with_emotions = get_questions_with_emotions
+
+      question = questions_with_emotions.find { |q| q[:question_num] == diary.question_num }
+      emotion = question[:emotions].find { |e| e[:emotion_num] == diary.emotion_num }
+
+      case question[:question_num]
+      when 1
+        text += generate_school_fun_text_with_emotion(emotion[:text], emotion[:image_url])
+      when 2
+        text += generate_study_understanding_text_with_emotion(emotion[:text], emotion[:image_url])
+      when 3
+        text += generate_recess_fun_text_with_emotion(emotion[:text], emotion[:image_url])
+      when 4
+        text += generate_lunch_eating_text_with_emotion(emotion[:text], emotion[:image_url])
+      end
+
+      text
+    end
+
     def get_questions_with_emotions
       [
         {
@@ -44,4 +72,74 @@ module DiariesHelper
         }
       ]
     end
-  end
+
+    private
+
+    def generate_school_fun_text_with_emotion(emotion_text, image_url)
+      case emotion_text
+      when "とても たのしかった"
+        "きょうの がっこうは、 とても たのしかったです。#{image_tag_for_emotion(image_url, 'とても たのしかった')}<br>"
+      when "たのしかった"
+        "きょうの がっこうは たのしかったです。#{image_tag_for_emotion(image_url, 'たのしかった')}<br>"
+      when "すこしだけ たのしかった"
+        "きょうの がっこうは すこしだけ たのしかったです。#{image_tag_for_emotion(image_url, 'すこしだけ たのしかった')}<br>"
+      when "たのしくなかった"
+        "きょうの がっこうは あまり たのしくなかったです。#{image_tag_for_emotion(image_url, 'たのしくなかった')}<br>"
+      else
+        ""
+      end
+    end
+
+    def generate_study_understanding_text_with_emotion(emotion_text, image_url)
+      case emotion_text
+      when "とても よくわかった"
+        "きょうの べんきょうは、 とても よく わかりました。#{image_tag_for_emotion(image_url, 'とても よくわかった')}<br>"
+      when "よくわかった"
+        "きょうの べんきょうは よく わかりました。#{image_tag_for_emotion(image_url, 'よくわかった')}<br>"
+      when "すこしだけ わかった"
+        "きょうの べんきょうは すこしだけ わかりました。#{image_tag_for_emotion(image_url, 'すこしだけ わかった')}<br>"
+      when "わからなかった"
+        "きょうの べんきょうは あまり わかりませんでした。#{image_tag_for_emotion(image_url, 'わからなかった')}<br>"
+      else
+        ""
+      end
+    end
+
+    def generate_recess_fun_text_with_emotion(emotion_text, image_url)
+      case emotion_text
+      when "とても たのしかった"
+        "やすみじかんは、 とても たのしく あそべました。#{image_tag_for_emotion(image_url, 'とても たのしかった')}<br>"
+      when "たのしかった"
+        "やすみじかんは たのしく あそべました。#{image_tag_for_emotion(image_url, 'たのしかった')}<br>"
+      when "すこしだけ たのしかった"
+        "やすみじかんは すこしだけ たのしく あそべました。#{image_tag_for_emotion(image_url, 'すこしだけ たのしかった')}<br>"
+      when "たのしくなかった"
+        "やすみじかんは あまり たのしく あそべませんでした。#{image_tag_for_emotion(image_url, 'たのしくなかった')}<br>"
+      else
+        ""
+      end
+    end
+
+    def generate_lunch_eating_text_with_emotion(emotion_text, image_url)
+      case emotion_text
+      when "ぜんぶたべて、おかわりもした"
+        "きゅうしょくは ぜんぶたべて、おかわりも しました。#{image_tag_for_emotion(image_url, 'ぜんぶたべて、おかわりもした')}<br>"
+      when "のこさずに、ぜんぶたべた"
+        "きゅうしょくは のこさずに、ぜんぶたべました。#{image_tag_for_emotion(image_url, 'のこさずに、ぜんぶたべた')}<br>"
+      when "へらしたけれど、ぜんぶたべた"
+        "きゅうしょくは へらしたけれど、ぜんぶたべました。#{image_tag_for_emotion(image_url, 'へらしたけれど、ぜんぶたべた')}<br>"
+      when "すこしだけ のこしてしまった"
+        "きゅうしょくは すこしだけ のこしてしまいました。#{image_tag_for_emotion(image_url, 'すこしだけ のこしてしまった')}<br>"
+      else
+        ""
+      end
+    end
+
+    def image_tag_for_emotion(image_url, alt_text)
+      if image_url.present?
+        "<img src='#{image_url}' alt='#{alt_text}' />"
+      else
+        ""
+      end
+    end
+end

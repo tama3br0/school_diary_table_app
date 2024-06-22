@@ -1,4 +1,3 @@
-# app/controllers/diaries_controller.rb
 class DiariesController < ApplicationController
     include DiariesHelper
 
@@ -24,7 +23,7 @@ class DiariesController < ApplicationController
         diary_entry = current_user.diaries.build(date: date, question_num: question_num, emotion_num: emotion_num)
 
         if diary_entry.save
-          next
+          current_user.stamps.create!(diary: diary_entry, stamp_image: 'https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/stamp.png')
         else
           successful_save = false
           break
@@ -38,6 +37,13 @@ class DiariesController < ApplicationController
         @diary = Diary.new(diary_params)
         render :new
       end
+    end
+
+    def show
+      @date = params[:date] || Diary.find(params[:id]).date
+      @diaries = current_user.diaries.where(date: @date)
+      @previous_day = current_user.diaries.where('date < ?', @date).order(date: :desc).first
+      @next_day = current_user.diaries.where('date > ?', @date).order(date: :asc).first
     end
 
     private
