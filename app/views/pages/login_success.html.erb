@@ -11,7 +11,7 @@
     <% end %>
   </h1>
   <ul>
-    <li class="write_diary_button"><%= link_to 'にっきをかく' %></li>
+    <li class="write_diary_button"><%= link_to 'にっきをかく', new_diary_path %></li>
     <li class="read_diary_button"><%= link_to 'にっきをよむ' %></li>
     <li class="stamp_card_button"><%= link_to 'スタンプカード' %></li>
     <% if @role == 'teacher' %>

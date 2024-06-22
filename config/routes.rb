@@ -14,4 +14,7 @@ Rails.application.routes.draw do
 
     get 'users/additional_info', to: 'users#additional_info', as: 'additional_info'
     patch 'users/save_additional_info', to: 'users#save_additional_info', as: 'save_additional_info'
+
+    # Diaries routes
+    resources :diaries, only: [:new, :create, :index, :show]
 end
