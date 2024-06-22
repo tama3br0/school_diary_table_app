@@ -9,7 +9,7 @@
 
   <div id="calendar">
     <%= render 'simple_calendar/month_calendar', start_date: @start_date, previous_link: @previous_link, today_link: @today_link, next_link: @next_link, weeks: @weeks do |date, diaries_for_date| %>
-      <div class="day <%= 'today' if date == Date.today %>">
+      <div class="day <%= 'today' if date == Time.zone.today %>">
         <div class="date-number"><%= date.day %></div>
         <% diaries_for_date.each do |diary| %>
           <% diary.stamps.each do |stamp| %>

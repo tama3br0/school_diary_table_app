@@ -1,12 +1,12 @@
 <div class="simple-calendar">
     <div class="calendar-heading">
-      <time datetime="<%= @start_date.strftime("%Y-%m") %>" class="calendar-title">
+      <time datetime="<%= @start_date.strftime('%Y-%m') %>" class="calendar-title">
         <%= "#{I18n.t('date.abbr_month_names')[@start_date.month]} #{@start_date.year}" %>
       </time>
 
       <nav>
         <%= link_to I18n.t('helpers.simple_calendar.previous'), { start_date: @previous_link } %>
-        <%= link_to I18n.t('helpers.simple_calendar.today'), { start_date: @today_link } %>
+        <%= link_to I18n.t('helpers.simple_calendar.today'), { start_date: today_in_timezone } %>
         <%= link_to I18n.t('helpers.simple_calendar.next'), { start_date: @next_link } %>
       </nav>
     </div>

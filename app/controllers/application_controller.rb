@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
     before_action :check_user_authentication
     before_action :set_user_info, if: :user_signed_in?
     include UsersHelper
+    include CalendarHelper
 
     private
 
