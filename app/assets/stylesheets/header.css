@@ -35,16 +35,18 @@ header .right-section {
     justify-content: flex-end;
 }
 
-header .logout-button {
+header .header-button {
     background-color: #007bff;
     color: white;
     padding: 10px 20px;
+    text-decoration: none;
     border: none;
     border-radius: 5px;
     font-size: 1em;
     cursor: pointer;
     transition: background-color 0.3s;
     margin-left: auto;
+    margin-right: 10px;
 }
 
 header .logout-button:hover {

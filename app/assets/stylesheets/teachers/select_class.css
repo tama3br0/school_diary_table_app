@@ -1,0 +1,64 @@
+
+/* teachers/select_class.css */
+.select-class-page {
+    padding: 20px;
+}
+
+.select-class-page .page-title {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.select-class-page .back-link {
+    display: block;
+    text-align: center;
+    margin: 10px 0;
+    color: white;
+    text-decoration: none;
+}
+
+.select-class-page .back-link:hover {
+    text-decoration: underline;
+}
+
+.select-class-page .class-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.select-class-page .class-link {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.select-class-page .class-link:hover {
+    background-color: #0056b3;
+}
+
+.button-link {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.button-link:hover {
+    background-color: #0056b3;
+}

@@ -2,7 +2,7 @@ class DiariesController < ApplicationController
     include DiariesHelper
 
     before_action :authenticate_user!
-    before_action :authorize_teacher, only: [:class_selection, :class_diary]
+    before_action :authorize_teacher, only: [:class_selection, :class_diary, :student_diary]
 
     def new
       @diary = Diary.new
@@ -10,8 +10,8 @@ class DiariesController < ApplicationController
     end
 
     def create
-      date = diary_params[:date]
-      current_user.diaries.where(date: date).destroy_all
+      diary_date = Date.current
+      current_user.diaries.where(date: diary_date).destroy_all
 
       @questions = get_questions_with_emotions
       answers = params[:answers].values
@@ -25,7 +25,7 @@ class DiariesController < ApplicationController
         emotion = question[:emotions].find { |e| e[:emotion_num] == emotion_num }
         answer_image = emotion[:image_url]
 
-        diary_entry = current_user.diaries.build(date: date, question_num: question_num, emotion_num: emotion_num, answer_image: answer_image)
+        diary_entry = current_user.diaries.build(date: diary_date, question_num: question_num, emotion_num: emotion_num, answer_image: answer_image)
 
         if diary_entry.save
           current_user.stamps.create!(diary: diary_entry, stamp_image: 'https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/stamp.png')
@@ -36,7 +36,7 @@ class DiariesController < ApplicationController
       end
 
       if successful_save
-        redirect_to login_success_path, notice: 'にっきをとうろくしました。'
+        redirect_to login_success_path, notice: 'にっきを ていしゅつしました。'
       else
         flash.now[:alert] = 'にっきのとうろくにしっぱいしました。もういちどためしてください。'
         @diary = Diary.new(diary_params)
@@ -52,32 +52,25 @@ class DiariesController < ApplicationController
     end
 
     def class_selection
-      if current_user.teacher?
-        @classes = GradeClass.joins(:users).where(school_code: current_user.grade_class.school_code, users: { role: 0 }).distinct
-      else
-        redirect_to authenticated_root_path, alert: 'アクセス権限がありません。'
-      end
+      @classes = GradeClass.joins(:users).where(school_code: current_user.grade_class.school_code, users: { role: 0 }).distinct
     end
 
     def class_diary
-      if valid_teacher?
-        @grade_class = GradeClass.find(params[:id])
-        @date = params[:date] || Date.today
-        @students = User.where(grade_class: @grade_class, role: 0)
-        @previous_date = @grade_class.users.joins(:diaries).where('diaries.date < ?', @date).order('diaries.date DESC').pluck(:date).first
-        @next_date = @grade_class.users.joins(:diaries).where('diaries.date > ?', @date).order('diaries.date ASC').pluck(:date).first
-      else
-        redirect_to authenticated_root_path, alert: 'アクセス権限がありません。'
-      end
+      @grade_class = GradeClass.find(params[:id])
+      @date = params[:date] ? Date.parse(params[:date]) : Date.current
+      @students = User.where(grade_class: @grade_class, role: 0)
+      @previous_date = @grade_class.users.joins(:diaries).where('diaries.date < ?', @date).order('diaries.date DESC').pluck(:date).first
+      @next_date = @grade_class.users.joins(:diaries).where('diaries.date > ?', @date).order('diaries.date ASC').pluck(:date).first
     end
 
     def student_diary
         @student = User.find(params[:id])
-        @date = params[:date] || Date.today
+        @date = params[:date] ? Date.parse(params[:date]) : Date.current
         @diaries = @student.diaries.where('date >= ? AND date <= ?', @date.beginning_of_month, @date.end_of_month)
         @previous_month = @date.prev_month
         @next_month = @date.next_month
     end
+
 
     private
 
@@ -86,13 +79,20 @@ class DiariesController < ApplicationController
     end
 
     def authorize_teacher
-      return if action_name == 'class_selection'
-      unless current_user.teacher? && current_user.grade_class.school_code == GradeClass.find(params[:id]).school_code
+      unless current_user.teacher?
         redirect_to authenticated_root_path, alert: 'アクセス権限がありません。'
+        return
+      end
+
+      if params[:id] && action_name != 'class_selection' && action_name != 'student_diary'
+        begin
+          grade_class = GradeClass.find(params[:id])
+          unless current_user.grade_class.school_code == grade_class.school_code
+            redirect_to authenticated_root_path, alert: 'アクセス権限がありません。'
+          end
+        rescue ActiveRecord::RecordNotFound
+          redirect_to authenticated_root_path, alert: '指定されたクラスは存在しません。'
+        end
       end
     end
-
-    def valid_teacher?
-      current_user.teacher? && current_user.grade_class.school_code == GradeClass.find(params[:id]).school_code
-    end
-end
+  end

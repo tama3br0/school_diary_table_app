@@ -1,0 +1,40 @@
+<!-- app/views/teachers/student_list.html.erb -->
+<% provide(:title, '登録児童一覧ページ') %>
+
+
+<div class="student-list-page">
+  <h1 class="page-title"><%= @grade_class.grade %> - <%= @grade_class.class_num %> の登録児童一覧</h1>
+  <%= link_to 'クラス選択に戻る', select_class_path, class: 'back-link button-link' %>
+  <%= link_to 'さいしょに もどる', authenticated_root_path, class: 'back-link button-link' %>
+
+  <div class="student-table">
+    <% (0..2).each do |col| %>
+      <div class="student-column">
+        <% (1..15).each do |i| %>
+          <% student_num = col * 15 + i %>
+          <% student = @students.find { |s| s.student_num == student_num } %>
+          <div class="student-row">
+            <div class="student-number">
+              <% if student %>
+                <%= "#{student.grade_class.grade}#{student.grade_class.class_num}#{sprintf('%02d', student.student_num)}" %>
+              <% else %>
+                <%= "#{@grade_class.grade}#{@grade_class.class_num}#{sprintf('%02d', student_num)}" %>
+              <% end %>
+            </div>
+            <div class="student-action">
+              <% if student %>
+                <% if current_user.grade_class == @grade_class %>
+                  <%= link_to '登録解除', remove_student_path(student), data: { turbo_method: :delete, turbo_confirm: '本当にこの児童を解除しますか？' }, class: 'student-button-link' %>
+                <% else %>
+                  -
+                <% end %>
+              <% else %>
+                未登録
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
