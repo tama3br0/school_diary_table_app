@@ -6,6 +6,7 @@ class Diary < ApplicationRecord
     validates :date, presence: true
     validates :question_num, presence: true
     validates :emotion_num, presence: true
+    validates :answer_image, presence: true
 
     def start_time
       date
@@ -20,6 +21,6 @@ class Diary < ApplicationRecord
     end
 
     def answers
-        [{ question_num: question_num, emotion_num: emotion_num }]
+      [{ question_num: self.question_num, emotion_num: self.emotion_num }]
     end
 end

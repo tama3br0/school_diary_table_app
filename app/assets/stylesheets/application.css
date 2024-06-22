@@ -11,5 +11,7 @@
  *= require diaries/new
  *= require diaries/calendar
  *= require diaries/show
-
+ *= require diaries/class_selection
+ *= require diaries/class_diary
+ *= require diaries/student_diary
  */

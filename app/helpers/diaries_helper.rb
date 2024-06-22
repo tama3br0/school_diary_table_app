@@ -29,12 +29,7 @@ module DiariesHelper
     end
 
     def display_emotion_image(diary)
-      questions_with_emotions = get_questions_with_emotions
-
-      question = questions_with_emotions.find { |q| q[:question_num] == diary.question_num }
-      emotion = question[:emotions].find { |e| e[:emotion_num] == diary.emotion_num }
-
-      image_tag_for_emotion(emotion[:image_url], emotion[:text])
+      image_tag(diary.answer_image, alt: "emotion")
     end
 
     def get_questions_with_emotions
@@ -80,6 +75,11 @@ module DiariesHelper
           ]
         }
       ]
+    end
+
+    def japanese_wday(date)
+      wdays = %w[日 月 火 水 木 金 土]
+      wdays[date.wday]
     end
 
     private
@@ -149,6 +149,16 @@ module DiariesHelper
         "<img src='#{image_url}' alt='#{alt_text}' />"
       else
         ""
+      end
+    end
+
+    def emotion_class(emotion_num)
+      case emotion_num
+      when 4 then "emotion-very-smile"
+      when 3 then "emotion-smile"
+      when 2 then "emotion-normal"
+      when 1 then "emotion-shock"
+      else "emotion-default"
       end
     end
 end

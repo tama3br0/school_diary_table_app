@@ -1,0 +1,95 @@
+/* diaries/class_diary.css */
+.class-diary-page {
+    padding: 20px; /* 周りに余白を追加 */
+}
+
+.class-diary-page .page-title {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.class-diary-page .back-link {
+    display: block;
+    text-align: center;
+    margin: 10px 0;
+    color: white; /* テキストカラーを白に */
+    text-decoration: none;
+}
+
+.class-diary-page .back-link:hover {
+    text-decoration: underline;
+}
+
+.class-diary-page .diary-table {
+    width: 100%;
+    max-width: 1000px; /* テーブルの最大幅を指定 */
+    margin: 0 auto; /* 中央寄せ */
+    border-collapse: collapse;
+    background-color: #f1f1f1; /* 表全体の背景色 */
+    table-layout: fixed; /* 各カラムの幅を固定 */
+}
+
+.class-diary-page .diary-table th, .class-diary-page .diary-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center; /* テキストと画像の中央揃え */
+    background-color: #fff; /* カラムの背景色 */
+    color: #000; /* テキストの色 */
+    font-size: 0.9em; /* 全体の文字サイズを一回り小さく */
+    word-wrap: break-word; /* テキストがカラムの幅を超えた場合に折り返す */
+}
+
+.class-diary-page .diary-table th {
+    background-color: #e9e9e9; /* ヘッダーの背景色 */
+}
+
+.class-diary-page .diary-column {
+    width: 15%; /* カラムの幅を統一 */
+}
+
+.class-diary-page .diary-table td img {
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+}
+
+.class-diary-page .student-number {
+    font-size: 0.8em; /* さらに小さく調整 */
+}
+
+/* 色を変更するフィルター */
+.emotion-very-smile img {
+    filter: hue-rotate(300deg) saturate(400%) brightness(200%); /* よりピンク色に変更 */
+}
+
+.emotion-smile img {
+    filter: hue-rotate(400deg) saturate(300%) brightness(150%); /* まあまあ調子が良いことを感じられる色 */
+}
+
+.emotion-normal img {
+    /* そのまま */
+}
+
+.emotion-shock img {
+    filter: hue-rotate(180deg) saturate(300%) brightness(150%); /* 青色に変更 */
+}
+
+.button-link {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: white; /* テキストカラーを白に */
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.button-link:hover {
+    background-color: #0056b3;
+}

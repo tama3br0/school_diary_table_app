@@ -17,4 +17,7 @@ Rails.application.routes.draw do
 
     # Diaries routes
     resources :diaries, only: [:new, :create, :index, :show]
+    get 'class_selection', to: 'diaries#class_selection', as: 'class_selection'
+    get 'class_diary/:id', to: 'diaries#class_diary', as: 'class_diary'
+    get 'student_diary/:id', to: 'diaries#student_diary', as: 'student_diary'
 end
