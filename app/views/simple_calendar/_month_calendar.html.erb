@@ -1,0 +1,40 @@
+<div class="simple-calendar">
+    <div class="calendar-heading">
+      <time datetime="<%= @start_date.strftime("%Y-%m") %>" class="calendar-title">
+        <%= "#{I18n.t('date.abbr_month_names')[@start_date.month]} #{@start_date.year}" %>
+      </time>
+
+      <nav>
+        <%= link_to I18n.t('helpers.simple_calendar.previous'), { start_date: @previous_link } %>
+        <%= link_to I18n.t('helpers.simple_calendar.today'), { start_date: @today_link } %>
+        <%= link_to I18n.t('helpers.simple_calendar.next'), { start_date: @next_link } %>
+      </nav>
+    </div>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <% I18n.t('date.abbr_day_names').each do |day| %>
+            <th><%= day %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% @weeks.each do |week| %>
+          <tr>
+            <% week.each do |date| %>
+              <td class="<%= date_classes(date) %>">
+                <% if block_given? %>
+                  <%= yield(date, @diaries.select { |diary| diary.date == date }) %>
+                <% else %>
+                  <div class="day">
+                    <div class="date-number"><%= date.day %></div>
+                  </div>
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>

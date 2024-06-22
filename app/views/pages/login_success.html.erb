@@ -1,4 +1,3 @@
-<!-- app/views/pages/login_success.html.erb -->
 <% provide(:title, 'ダッシュボード') %>
 <main>
   <div id="flash_messages">
@@ -9,8 +8,8 @@
   </h1>
 
   <div id="calendar">
-    <%= month_calendar(events: @diaries) do |date, diaries_for_date| %>
-      <div class="day">
+    <%= render 'simple_calendar/month_calendar', start_date: @start_date, previous_link: @previous_link, today_link: @today_link, next_link: @next_link, weeks: @weeks do |date, diaries_for_date| %>
+      <div class="day <%= 'today' if date == Date.today %>">
         <div class="date-number"><%= date.day %></div>
         <% diaries_for_date.each do |diary| %>
           <% diary.stamps.each do |stamp| %>
@@ -24,7 +23,7 @@
   <ul>
     <li class="write_diary_button"><%= link_to 'にっきをかく', new_diary_path %></li>
     <% if user_info(current_user)[:role] == 'teacher' %>
-      <li class="show_diary_button"><%= link_to 'にっきをみる' %></li>
+      <li class="show_diary_button"><%= link_to 'にっきをみる', diaries_path %></li>
     <% end %>
   </ul>
 </main>
