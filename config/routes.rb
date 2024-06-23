@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     end
 
     devise_scope :user do
-        get '/users/sign_out' => 'devise/sessions#destroy'
+        get '/users/sign_out' => 'devise/sessions#destroy' # link_toでログアウトが発動するように
     end
 
     get 'pages/login_success', to: 'pages#login_success', as: 'login_success'
@@ -20,7 +20,12 @@ Rails.application.routes.draw do
     patch 'users/save_additional_info', to: 'users#save_additional_info', as: 'save_additional_info'
 
     # Diaries routes
-    resources :diaries, only: [:new, :create, :index, :show]
+    resources :diaries, only: [:new, :create, :index, :show] do
+        collection do
+            get  'new_for_student/:student_id',     to: 'diaries#new_for_student',      as: 'new_for_student'
+            post 'create_for_student/:student_id',  to: 'diaries#create_for_student',   as: 'create_for_student'
+        end
+    end
 
     authenticate :user, lambda { |u| u.teacher? } do
         get 'class_selection',   to: 'diaries#class_selection', as: 'class_selection'

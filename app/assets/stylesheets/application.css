@@ -14,6 +14,7 @@
  *= require diaries/class_selection
  *= require diaries/class_diary
  *= require diaries/student_diary
+ *= require diaries/new_for_student
  *= require teachers/select_class
  *= require teachers/student_list
  */

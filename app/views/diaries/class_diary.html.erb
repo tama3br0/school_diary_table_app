@@ -19,6 +19,9 @@
         <th class="class-diary-column">勉強</th>
         <th class="class-diary-column">休み時間</th>
         <th class="class-diary-column">給食</th>
+        <% if current_user.teacher? %>
+          <th>先生が代行</th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
@@ -42,6 +45,11 @@
             <% end %>
           <% else %>
             <td colspan="4">まだ ていしゅつしていません</td>
+          <% end %>
+          <% if current_user.teacher? %>
+            <td>
+              <%= link_to '日記作成', new_for_student_diaries_path(student_id: student.id, date: @date), class: 'button' %>
+            </td>
           <% end %>
         </tr>
       <% end %>

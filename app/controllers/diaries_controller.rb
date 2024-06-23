@@ -63,7 +63,6 @@ class DiariesController < ApplicationController
         @next_date = @grade_class.users.joins(:diaries).where('diaries.date > ?', @date).order('diaries.date ASC').pluck(:date).first
     end
 
-
     def student_diary
         @student = User.find(params[:id])
         @date = params[:date] ? Date.parse(params[:date]) : Date.current
@@ -71,6 +70,50 @@ class DiariesController < ApplicationController
         @previous_month = @date.prev_month
         @next_month = @date.next_month
     end
+
+    def new_for_student
+        @student = User.find(params[:student_id])
+        @date = params[:date] ? Date.parse(params[:date]) : Date.current
+        @diary = @student.diaries.build(date: @date)
+        @questions = get_questions_with_emotions
+    end
+
+    def create_for_student
+        @student = User.find(params[:student_id])
+        diary_date = params[:date]
+        @student.diaries.where(date: diary_date).destroy_all
+
+        @questions = get_questions_with_emotions
+        answers = params[:answers].values
+        successful_save = true
+
+        answers.each do |answer|
+          question_num = answer[:question_num].to_i
+          emotion_num = answer[:emotion_num].to_i
+
+          question = @questions.find { |q| q[:question_num] == question_num }
+          emotion = question[:emotions].find { |e| e[:emotion_num] == emotion_num }
+          answer_image = emotion[:image_url]
+
+          diary_entry = @student.diaries.build(date: diary_date, question_num: question_num, emotion_num: emotion_num, answer_image: answer_image)
+
+          if diary_entry.save
+            @student.stamps.create!(diary: diary_entry, stamp_image: 'https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/stamp.png')
+          else
+            successful_save = false
+            break
+          end
+        end
+
+        if successful_save
+          redirect_to class_diary_path(@student.grade_class, date: diary_date), notice: '日記を代わりに提出しました。'
+        else
+          flash.now[:alert] = '日記の登録に失敗しました。もう一度試してください。'
+          @diary = @student.diaries.build(diary_params)
+          render :new_for_student
+        end
+    end
+
 
 
     private
@@ -96,4 +139,4 @@ class DiariesController < ApplicationController
         end
       end
     end
-  end
+end
