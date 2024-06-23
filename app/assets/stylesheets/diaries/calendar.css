@@ -1,7 +1,9 @@
-/* カレンダー全体のスタイリング */
+/* diaries/calendar.css */
 #calendar {
     width: 100%;
     border-collapse: collapse;
+    margin: 0 auto;
+    padding: 32px;
   }
 
   #calendar th, #calendar td {
@@ -11,12 +13,41 @@
     vertical-align: top;
   }
 
-.calendar-title {
+  .calendar-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     color: #333;
+    size: 16px;
+    text-align: center;
 }
+
+.calendar-title {
+    display: inline-block;
+    color: #333;
+    font-size: 36px;
+    font-weight: bold;
+    text-align: left;
+    margin: 0 auto;
+    padding-bottom: 16px;
+}
+
+.calendar-heading nav {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-weight: bold;
+}
+
+.calendar-heading nav a {
+    text-decoration: none;
+    padding-left: 16px;
+}
+
 
 .table.table-striped {
     color: #333;
+    margin-top: 16px;
 }
   /* 曜日ごとの色（目に優しいパステルカラー） */
   #calendar th:nth-child(1), #calendar td:nth-child(1) {
@@ -78,7 +109,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 20px;
-    height: 20px;
+    width: 70%; /* スタンプ画像の幅を調整 */
+    height: 70%; /* スタンプ画像の高さを調整 */
     display: block;
-  }
+}

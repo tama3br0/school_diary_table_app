@@ -1,3 +1,4 @@
+/* pages/login_success.css */
 body {
     background-image: url('https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/top.png');
     background-size: cover;
@@ -36,67 +37,48 @@ main p {
     color: black; /* 文字色を黒に変更 */
 }
 
-ul {
-    list-style-type: none;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.8); /* 薄い白い背景 */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+#calendar {
+    margin-bottom: 30px; /* カレンダーとボタンの間に余白を追加 */
 }
 
-ul li {
-    margin: 10px 0;
+.diary-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 24px; /* ボタン間の間隔を追加 */
+    margin-bottom: 24px; /* 上部に余白を追加 */
 }
 
-ul li a {
+.diary-button {
     display: inline-block;
     width: 200px;
     color: white;
     padding: 15px 20px;
     text-decoration: none;
     border-radius: 10px;
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
     font-size: 1.5em;
     font-weight: bold;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.write_diary_button a {
+.write_diary_button {
     background-color: #0288d1; /* 濃い水色 */
 }
 
-.read_diary_button a {
-    background-color: #c2185b; /* 濃いピンク */
-}
-
-.stamp_card_button a {
-    background-color: #fbc02d; /* 濃い黄色 */
-}
-
-.show_diary_button a {
+.show_diary_button {
     background-color: #388e3c; /* 濃い緑 */
 }
 
-.write_diary_button a:hover {
+.diary-button:hover {
+    transform: scale(1.05);
+}
+
+.write_diary_button:hover {
     background-color: #b3e5fc; /* 淡い水色 */
     color: #000; /* ホバー時の文字色を黒に */
 }
 
-.read_diary_button a:hover {
-    background-color: #f8bbd0; /* 淡いピンク */
-    color: #000; /* ホバー時の文字色を黒に */
-}
-
-.stamp_card_button a:hover {
-    background-color: #fff9c4; /* 淡い黄色 */
-    color: #000; /* ホバー時の文字色を黒に */
-}
-
-.show_diary_button a:hover {
+.show_diary_button:hover {
     background-color: #c8e6c9; /* 淡い緑 */
     color: #000; /* ホバー時の文字色を黒に */
-}
-
-ul li a:visited {
-    color: white; /* 訪問済みリンクの色を修正 */
 }
