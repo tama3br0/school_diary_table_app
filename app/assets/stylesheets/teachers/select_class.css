@@ -1,10 +1,11 @@
-
 /* teachers/select_class.css */
+
 .select-class-page {
     padding: 20px;
 }
 
 .select-class-page .page-title {
+    color: #333;
     font-size: 2em;
     font-weight: bold;
     text-align: center;
@@ -15,7 +16,7 @@
     display: block;
     text-align: center;
     margin: 10px 0;
-    color: white;
+    color: white; /* テキストカラーを白に */
     text-decoration: none;
 }
 
@@ -27,29 +28,34 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 50px;
+    border-radius: 10px;
 }
 
 .select-class-page .class-link {
     margin: 10px;
     padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
+    background-color: #007bff; /* 背景色 */
+    color: white; /* テキストカラーを白に */
+    font-size: 1.2em;
+    text-align: center;
+    text-decoration: none;
     border: 1px solid #ccc;
     border-radius: 5px;
-    text-decoration: none;
     display: inline-block;
-    text-align: center;
 }
 
 .select-class-page .class-link:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* ホバー時の背景色を少し暗くする */
 }
 
 .button-link {
     display: inline-block;
     padding: 10px 20px;
     font-size: 1em;
-    color: white;
+    color: white; /* テキストカラーを白に */
     background-color: #007bff;
     border: none;
     border-radius: 5px;

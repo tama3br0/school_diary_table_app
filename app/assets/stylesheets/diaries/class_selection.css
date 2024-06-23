@@ -5,6 +5,7 @@
 }
 
 .class-selection-page .page-title {
+    color: #333;
     font-size: 2em;
     font-weight: bold;
     text-align: center;
@@ -27,6 +28,10 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 50px;
+    border-radius: 10px;
 }
 
 .class-selection-page .class-link {
@@ -34,6 +39,9 @@
     padding: 10px 20px;
     background-color: #007bff; /* 背景色 */
     color: white; /* テキストカラーを白に */
+    font-size: 1.2em;
+    text-align: center;
+    text-decoration: none;
     border: 1px solid #ccc;
     border-radius: 5px;
     text-decoration: none;
