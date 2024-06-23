@@ -4,6 +4,7 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed; /* 背景画像を固定 */
     height: 100vh;
     margin: 0;
     display: flex;
@@ -12,7 +13,6 @@ body {
     font-family: 'Arial', sans-serif;
     color: white;
     text-align: center;
-    padding-top: 80px; /* ヘッダーの高さ分のパディングを追加 */
 }
 
 form.additional-info-form {
@@ -23,6 +23,12 @@ form.additional-info-form {
     max-width: 600px;
     width: 100%;
     color: white;
+}
+
+.additional_info_container {
+    color: #333;
+    padding: 240px 0 80px 0;
+    min-height: 100vh; /* 要素が背景画像の高さを超えたときに対応 */
 }
 
 .field {

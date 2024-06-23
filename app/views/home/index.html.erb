@@ -1,6 +1,8 @@
 <% provide(:title, 'トップページ') %>
-<img src="https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/logo.png" alt="がっこうにっき ロゴ" class="top-logo">
-<div class="login-container">
-    <p class="login-message">ログインをして はじめよう！</p>
-    <%= link_to 'ログイン', user_google_oauth2_omniauth_authorize_path, class: 'login-button' %>
+<div class="background-blur">
+    <img src="https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/logo.png" alt="がっこうにっき ロゴ" class="top-logo">
+    <div class="login-container">
+        <p class="login-message">ログインをして はじめよう！</p>
+        <%= link_to 'ログイン', user_google_oauth2_omniauth_authorize_path, class: 'login-button' %>
+    </div>
 </div>
