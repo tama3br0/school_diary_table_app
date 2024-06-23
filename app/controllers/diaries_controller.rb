@@ -45,10 +45,10 @@ class DiariesController < ApplicationController
     end
 
     def show
-      @date = params[:date] || Diary.find(params[:id]).date
-      @diaries = current_user.diaries.where(date: @date)
-      @previous_day = current_user.diaries.where('date < ?', @date).order(date: :desc).first
-      @next_day = current_user.diaries.where('date > ?', @date).order(date: :asc).first
+        @date = params[:date] ? Date.parse(params[:date]) : Diary.find(params[:id]).date
+        @diaries = current_user.diaries.where(date: @date)
+        @previous_day = current_user.diaries.where('date < ?', @date).order(date: :desc).first
+        @next_day = current_user.diaries.where('date > ?', @date).order(date: :asc).first
     end
 
     def class_selection
@@ -56,12 +56,13 @@ class DiariesController < ApplicationController
     end
 
     def class_diary
-      @grade_class = GradeClass.find(params[:id])
-      @date = params[:date] ? Date.parse(params[:date]) : Date.current
-      @students = User.where(grade_class: @grade_class, role: 0)
-      @previous_date = @grade_class.users.joins(:diaries).where('diaries.date < ?', @date).order('diaries.date DESC').pluck(:date).first
-      @next_date = @grade_class.users.joins(:diaries).where('diaries.date > ?', @date).order('diaries.date ASC').pluck(:date).first
+        @grade_class = GradeClass.find(params[:id])
+        @date = params[:date] ? Date.parse(params[:date]) : Date.current
+        @students = User.where(grade_class: @grade_class, role: 0).order(:student_num)
+        @previous_date = @grade_class.users.joins(:diaries).where('diaries.date < ?', @date).order('diaries.date DESC').pluck(:date).first
+        @next_date = @grade_class.users.joins(:diaries).where('diaries.date > ?', @date).order('diaries.date ASC').pluck(:date).first
     end
+
 
     def student_diary
         @student = User.find(params[:id])

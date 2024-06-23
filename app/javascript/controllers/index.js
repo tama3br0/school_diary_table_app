@@ -6,6 +6,10 @@ import { application } from "controllers/application"
 import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading"
 eagerLoadControllersFrom("controllers", application)
 
+// Import the additional_info_controller and register it
+import AdditionalInfoController from "./additional_info_controller"
+application.register("additional-info", AdditionalInfoController)
+
 // Lazy load controllers as they appear in the DOM (remember not to preload controllers in import map!)
 // import { lazyLoadControllersFrom } from "@hotwired/stimulus-loading"
 // lazyLoadControllersFrom("controllers", application)

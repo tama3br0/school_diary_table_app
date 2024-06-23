@@ -1,11 +1,11 @@
 <% provide(:title, 'ダッシュボード') %>
 <main>
-  <div id="flash_messages">
-    <%= render 'layouts/flash' %>
-  </div>
-  <h1>
-    <%= display_user_greeting(user_info(current_user)) %>
-  </h1>
+    <h1>
+        <%= display_user_greeting(user_info(current_user)) %>
+    </h1>
+    <div id="flash_messages">
+      <%= render 'layouts/flash' %>
+    </div>
 
   <div id="calendar">
     <%= render 'simple_calendar/month_calendar', start_date: @start_date, previous_link: @previous_link, today_link: @today_link, next_link: @next_link, weeks: @weeks do |date, diaries_for_date| %>

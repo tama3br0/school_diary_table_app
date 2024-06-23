@@ -22,10 +22,19 @@ class UsersController < ApplicationController
 
       if @user.valid? && (teacher?(@user) || unique_combination?(@user, grade_class, @user.student_num))
         @user.save
-        redirect_to authenticated_root_path, notice: 'とうろく できました！'
+        respond_to do |format|
+          format.html { redirect_to authenticated_root_path, notice: 'とうろく できました！' }
+          format.turbo_stream { redirect_to authenticated_root_path, notice: 'とうろく できました！' }
+        end
       else
-        flash[:alert] = @user.errors.full_messages.join("\n")
-        render :additional_info
+        flash.now[:alert] = @user.errors.full_messages.join("\n")
+        flash.now[:alert] = "すでに とうろくされているひとが います" if @user.errors[:student_num].include?("すでに、ほかのひとが とうろく されています")
+        respond_to do |format|
+          format.html { render :additional_info }
+          format.turbo_stream {
+            render turbo_stream: turbo_stream.replace("additional_info_form", partial: "users/additional_info_form", locals: { user: @user })
+          }
+        end
       end
     end
 
@@ -34,4 +43,4 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:role, :name, :student_num, :grade, :class_num, :school_code)
     end
-end
+  end
