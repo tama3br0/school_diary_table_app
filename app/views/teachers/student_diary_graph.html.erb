@@ -1,0 +1,232 @@
+<!-- カット！！！！ -->
+
+
+<% provide(:title, '日記の記録') %>
+<div class="student-diary-graph-container">
+  <h1 class="student-diary-graph-title"><%= display_user_info(@student) %>の日記の記録</h1>
+
+  <div class="student-diary-graph-tabs">
+    <button class="student-diary-graph-tablink" onclick="openTab(event, 'daily')">日別</button>
+    <button class="student-diary-graph-tablink" onclick="openTab(event, 'monthly')">月別</button>
+  </div>
+
+  <div id="daily" class="student-diary-graph-tabcontent">
+    <h2 class="student-diary-graph-tab-title">日別 (1週間分)</h2>
+    <canvas class="student-diary-graph-canvas" id="dailyChart" width="400" height="400"></canvas>
+  </div>
+
+  <div id="monthly" class="student-diary-graph-tabcontent">
+    <h2 class="student-diary-graph-tab-title">月別</h2>
+    <canvas class="student-diary-graph-canvas" id="monthlyChart" width="400" height="400"></canvas>
+  </div>
+</div>
+
+<script>
+  var dailyChart, monthlyChart;
+
+  function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("student-diary-graph-tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("student-diary-graph-tablink");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+    renderCharts(); // タブを切り替える際にグラフを再レンダリング
+  }
+
+  function renderCharts() {
+    if (dailyChart) dailyChart.destroy();
+    if (monthlyChart) monthlyChart.destroy();
+
+    var dailyCtx = document.getElementById('dailyChart')?.getContext('2d');
+    var monthlyCtx = document.getElementById('monthlyChart')?.getContext('2d');
+
+    if (!dailyCtx || !monthlyCtx) {
+      console.error('Canvas context not found');
+      return;
+    }
+
+    var dailyData = <%= @daily_diaries.to_json.html_safe %>;
+    var monthlyData = <%= @monthly_diaries.to_json.html_safe %>;
+
+    console.log('Daily Data 日別データ:', dailyData);
+    console.log('Monthly Data 月別データ:', monthlyData);
+
+    function formatDataForLineChart(data) {
+      var labels = [];
+      var datasets = [];
+
+      var questionLabels = [
+        '学校は楽しかったですか？',
+        '勉強はよく分かりましたか？',
+        '休み時間は楽しく遊べましたか？',
+        '給食は全部食べましたか？'
+      ];
+
+      Object.keys(data).forEach(function(date) {
+        data[date].forEach(function(diary) {
+          if (!labels.includes(date)) {
+            labels.push(date);
+          }
+        });
+      });
+
+      for (var questionNum = 1; questionNum <= 4; questionNum++) {
+        var dataset = {
+          label: questionLabels[questionNum - 1],
+          data: labels.map(function(date) {
+            var diaries = data[date];
+            var diary = diaries ? diaries.find(d => d.question_num == questionNum) : null;
+            var point = diary ? { x: new Date(date), y: diary.emotion_num } : { x: new Date(date), y: null };
+            console.log(`Point for ${questionLabels[questionNum - 1]} on ${date}:`, point); // デバッグログ
+            return point;
+          }),
+          fill: false,
+          borderColor: getColorForQuestionNum(questionNum),
+          tension: 0.1,
+          pointHitRadius: 5
+        };
+        datasets.push(dataset);
+      }
+
+      labels = Array.from(new Set(labels)).sort((a, b) => new Date(a) - new Date(b)); // 重複を取り除いてソート
+
+      console.log('Formatted Data for Line Chart フォーマットデータ:', {
+        labels: labels,
+        datasets: datasets
+      });
+
+      return {
+        labels: labels.map(date => new Date(date)),
+        datasets: datasets
+      };
+    }
+
+    function getColorForQuestionNum(questionNum) {
+      switch (questionNum) {
+        case 1: return 'rgba(75, 192, 192, 1)';
+        case 2: return 'rgba(54, 162, 235, 1)';
+        case 3: return 'rgba(255, 206, 86, 1)';
+        case 4: return 'rgba(255, 99, 132, 1)';
+        default: return 'rgba(75, 192, 192, 1)';
+      }
+    }
+
+    function getWeekDates() {
+      var today = new Date();
+      var dayOfWeek = today.getDay(); // 0 (日曜日)から6 (土曜日)
+      var weekDates = [];
+
+      for (var i = 0; i < 7; i++) {
+        var date = new Date(today);
+        date.setDate(today.getDate() - dayOfWeek + i); // 週の正しい日にちに調整
+        weekDates.push(date.toISOString().split('T')[0]); // YYYY-MM-DD形式でフォーマット
+      }
+
+      console.log('Week Dates 一週間データ:', weekDates);
+      return weekDates;
+    }
+
+    var dailyChartData = formatDataForLineChart(dailyData);
+    console.log('Daily Chart Data:', dailyChartData);
+
+    dailyChart = new Chart(dailyCtx, {
+      type: 'line',
+      data: dailyChartData,
+      options: {
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              unit: 'day',
+              min: new Date(getWeekDates()[0]),
+              max: new Date(getWeekDates()[6])
+            },
+            title: {
+              display: true,
+              text: '日付',
+              color: '#000'
+            },
+            ticks: {
+              color: '#000'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: '感情レベル',
+              color: '#000'
+            },
+            ticks: {
+              beginAtZero: true,
+              max: 4,
+              stepSize: 1,
+              color: '#000'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: '#000'
+            }
+          }
+        }
+      }
+    });
+
+    var monthlyChartData = formatDataForLineChart(monthlyData);
+    console.log('Monthly Chart Data:', monthlyChartData);
+
+    monthlyChart = new Chart(monthlyCtx, {
+      type: 'line',
+      data: monthlyChartData,
+      options: {
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              unit: 'month'
+            },
+            title: {
+              display: true,
+              text: '月',
+              color: '#000'
+            },
+            ticks: {
+              color: '#000'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: '感情レベル',
+              color: '#000'
+            },
+            ticks: {
+              beginAtZero: true,
+              max: 4,
+              stepSize: 1,
+              color: '#000'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: '#000'
+            }
+          }
+        }
+      }
+    });
+  }
+
+  document.addEventListener('turbo:load', renderCharts);
+  document.addEventListener('DOMContentLoaded', renderCharts);
+</script>

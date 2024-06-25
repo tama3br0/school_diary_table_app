@@ -17,4 +17,5 @@
  *= require diaries/new_for_student
  *= require teachers/select_class
  *= require teachers/student_list
+ *= require teachers/emotion_distribution
  */

@@ -1,0 +1,201 @@
+<% provide(:title, '円グラフ') %>
+<div class="emotion-distribution-container">
+  <h1 class="emotion-distribution-graphs-title">回答の分布 - <%= @grade_class.grade %>年<%= @grade_class.class_num %>組</h1>
+
+  <div class="emotion-distribution-tabs">
+    <button class="emotion-distribution-tablink" onclick="openTab(event, 'daily')">日別</button>
+    <button class="emotion-distribution-tablink" onclick="openTab(event, 'monthly')">月別</button>
+    <button class="emotion-distribution-tablink" onclick="openTab(event, 'overall')">統計</button>
+  </div>
+
+  <div id="daily" class="emotion-distribution-tabcontent">
+    <h2 class="emotion-distribution-tab-title">本日の分布</h2>
+    <div class="emotion-distribution-chart-row">
+      <div class="emotion-distribution-chart-container">
+        <h3 class="emotion-distribution-chart-title">学校は、楽しかったですか？</h3>
+        <canvas class="emotion-distribution-canvas" id="dailyQuestion1Chart" width="400" height="400"></canvas>
+      </div>
+      <div class="emotion-distribution-chart-container">
+        <h3 class="emotion-distribution-chart-title">勉強は、よく分かりましたか？</h3>
+        <canvas class="emotion-distribution-canvas" id="dailyQuestion2Chart" width="400" height="400"></canvas>
+      </div>
+      <div class="emotion-distribution-chart-container">
+        <h3 class="emotion-distribution-chart-title">休み時間は、楽しく遊べましたか？</h3>
+        <canvas class="emotion-distribution-canvas" id="dailyQuestion3Chart" width="400" height="400"></canvas>
+      </div>
+      <div class="emotion-distribution-chart-container">
+        <h3 class="emotion-distribution-chart-title">給食は、残さず食べられましたか？</h3>
+        <canvas class="emotion-distribution-canvas" id="dailyQuestion4Chart" width="400" height="400"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div id="monthly" class="emotion-distribution-tabcontent">
+    <h2 class="emotion-distribution-tab-title">今月の分布</h2>
+    <div class="emotion-distribution-chart-row">
+      <div class="emotion-distribution-chart-container">
+        <h3 class="emotion-distribution-chart-title">学校は、楽しかったですか？</h3>
+        <canvas class="emotion-distribution-canvas" id="monthlyQuestion1Chart" width="400" height="400"></canvas>
+      </div>
+      <div class="emotion-distribution-chart-container">
+        <h3 class="emotion-distribution-chart-title">勉強は、よく分かりましたか？</h3>
+        <canvas class="emotion-distribution-canvas" id="monthlyQuestion2Chart" width="400" height="400"></canvas>
+      </div>
+      <div class="emotion-distribution-chart-container">
+        <h3 class="emotion-distribution-chart-title">休み時間は、楽しく遊べましたか？</h3>
+        <canvas class="emotion-distribution-canvas" id="monthlyQuestion3Chart" width="400" height="400"></canvas>
+      </div>
+      <div class="emotion-distribution-chart-container">
+        <h3 class="emotion-distribution-chart-title">給食は、残さず食べられましたか？</h3>
+        <canvas class="emotion-distribution-canvas" id="monthlyQuestion4Chart" width="400" height="400"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div id="overall" class="emotion-distribution-tabcontent">
+    <h2 class="emotion-distribution-tab-title">統計</h2>
+    <div class="emotion-distribution-chart-row">
+      <div class="emotion-distribution-chart-container">
+        <h3 class="emotion-distribution-chart-title">学校は、楽しかったですか？</h3>
+        <canvas class="emotion-distribution-canvas" id="overallQuestion1Chart" width="400" height="400"></canvas>
+      </div>
+      <div class="emotion-distribution-chart-container">
+        <h3 class="emotion-distribution-chart-title">勉強は、よく分かりましたか？</h3>
+        <canvas class="emotion-distribution-canvas" id="overallQuestion2Chart" width="400" height="400"></canvas>
+      </div>
+      <div class="emotion-distribution-chart-container">
+        <h3 class="emotion-distribution-chart-title">休み時間は、楽しく遊べましたか？</h3>
+        <canvas class="emotion-distribution-canvas" id="overallQuestion3Chart" width="400" height="400"></canvas>
+      </div>
+      <div class="emotion-distribution-chart-container">
+        <h3 class="emotion-distribution-chart-title">給食は、残さず食べられましたか？</h3>
+        <canvas class="emotion-distribution-canvas" id="overallQuestion4Chart" width="400" height="400"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("emotion-distribution-tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("emotion-distribution-tablink");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+
+    // スクロール位置を調整
+    var headerOffset = 70; // ヘッダーの高さを調整
+    var elementPosition = document.getElementById(tabName).offsetTop;
+    var offsetPosition = elementPosition - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+
+    renderCharts();
+  }
+
+  function renderCharts() {
+    var dailyCtx1 = document.getElementById('dailyQuestion1Chart').getContext('2d');
+    var dailyCtx2 = document.getElementById('dailyQuestion2Chart').getContext('2d');
+    var dailyCtx3 = document.getElementById('dailyQuestion3Chart').getContext('2d');
+    var dailyCtx4 = document.getElementById('dailyQuestion4Chart').getContext('2d');
+
+    var monthlyCtx1 = document.getElementById('monthlyQuestion1Chart').getContext('2d');
+    var monthlyCtx2 = document.getElementById('monthlyQuestion2Chart').getContext('2d');
+    var monthlyCtx3 = document.getElementById('monthlyQuestion3Chart').getContext('2d');
+    var monthlyCtx4 = document.getElementById('monthlyQuestion4Chart').getContext('2d');
+
+    var overallCtx1 = document.getElementById('overallQuestion1Chart').getContext('2d');
+    var overallCtx2 = document.getElementById('overallQuestion2Chart').getContext('2d');
+    var overallCtx3 = document.getElementById('overallQuestion3Chart').getContext('2d');
+    var overallCtx4 = document.getElementById('overallQuestion4Chart').getContext('2d');
+
+    var dailyQuestion1Data = <%= @daily_distribution[:question1].to_json.html_safe %>;
+    var dailyQuestion2Data = <%= @daily_distribution[:question2].to_json.html_safe %>;
+    var dailyQuestion3Data = <%= @daily_distribution[:question3].to_json.html_safe %>;
+    var dailyQuestion4Data = <%= @daily_distribution[:question4].to_json.html_safe %>;
+
+    var monthlyQuestion1Data = <%= @monthly_distribution[:question1].to_json.html_safe %>;
+    var monthlyQuestion2Data = <%= @monthly_distribution[:question2].to_json.html_safe %>;
+    var monthlyQuestion3Data = <%= @monthly_distribution[:question3].to_json.html_safe %>;
+    var monthlyQuestion4Data = <%= @monthly_distribution[:question4].to_json.html_safe %>;
+
+    var overallQuestion1Data = <%= @overall_distribution[:question1].to_json.html_safe %>;
+    var overallQuestion2Data = <%= @overall_distribution[:question2].to_json.html_safe %>;
+    var overallQuestion3Data = <%= @overall_distribution[:question3].to_json.html_safe %>;
+    var overallQuestion4Data = <%= @overall_distribution[:question4].to_json.html_safe %>;
+
+    function formatDataForPieChart(data, questionNum) {
+      var labels;
+      switch (questionNum) {
+        case 1:
+        case 3:
+          labels = ['とても たのしかった', 'たのしかった', 'すこしだけ たのしかった', 'たのしくなかった'];
+          break;
+        case 2:
+          labels = ['とても よくわかった', 'よくわかった', 'すこしだけ わかった', 'ぜんぜん わからなかった'];
+          break;
+        case 4:
+          labels = ['ぜんぶたべて おかわりもした', 'ぜんぶたべた', 'へらしたけれど ぜんぶたべた', 'のこしてしまった'];
+          break;
+      }
+      var backgroundColors = ['#FF6384', '#4BC0C0', '#FFCE56', '#36A2EB'];
+
+      var counts = [data[4] || 0, data[3] || 0, data[2] || 0, data[1] || 0];
+
+      return {
+        labels: labels,
+        datasets: [{
+          data: counts,
+          backgroundColor: backgroundColors
+        }]
+      };
+    }
+
+    function createChart(ctx, data, questionNum) {
+      return new Chart(ctx, {
+        type: 'pie',
+        data: formatDataForPieChart(data, questionNum),
+        options: {
+          animation: {
+            animateScale: true,
+            animateRotate: true
+          }
+        }
+      });
+    }
+
+    var dailyChart1 = createChart(dailyCtx1, dailyQuestion1Data, 1);
+    var dailyChart2 = createChart(dailyCtx2, dailyQuestion2Data, 2);
+    var dailyChart3 = createChart(dailyCtx3, dailyQuestion3Data, 3);
+    var dailyChart4 = createChart(dailyCtx4, dailyQuestion4Data, 4);
+
+    var monthlyChart1 = createChart(monthlyCtx1, monthlyQuestion1Data, 1);
+    var monthlyChart2 = createChart(monthlyCtx2, monthlyQuestion2Data, 2);
+    var monthlyChart3 = createChart(monthlyCtx3, monthlyQuestion3Data, 3);
+    var monthlyChart4 = createChart(monthlyCtx4, monthlyQuestion4Data, 4);
+
+    var overallChart1 = createChart(overallCtx1, overallQuestion1Data, 1);
+    var overallChart2 = createChart(overallCtx2, overallQuestion2Data, 2);
+    var overallChart3 = createChart(overallCtx3, overallQuestion3Data, 3);
+    var overallChart4 = createChart(overallCtx4, overallQuestion4Data, 4);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    renderCharts(); // 初期ロード時にチャートを描画
+
+    // タブがクリックされるたびにチャートを再描画
+    var tablinks = document.getElementsByClassName("tablink");
+    for (var i = 0; i < tablinks.length; i++) {
+      tablinks[i].addEventListener("click", renderCharts);
+    }
+  });
+</script>

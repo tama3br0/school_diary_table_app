@@ -2,6 +2,7 @@
 .student-diary-page {
     color: #333;
     padding: 20px; /* 周りに余白を追加 */
+    margin-top: 840px;
 }
 
 .student-diary-page .page-title {

@@ -4,9 +4,7 @@
     <h1>データを とうろく しよう！</h1>
 
     <%= turbo_frame_tag "additional_info_form" do %>
-    <% if flash[:alert] %>
-        <div class="alert alert-danger"><%= flash[:alert] %></div>
-    <% end %>
+
     <div data-controller="additional-info">
         <%= render 'additional_info_form', user: @user %>
     </div>

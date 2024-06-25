@@ -11,6 +11,7 @@ class User < ApplicationRecord
     validates :role, presence: true, unless: :skip_validations
     validates :student_num, presence: true, if: -> { student? && !skip_validations }
     validates :name, presence: true, if: -> { teacher? && !skip_validations }
+    validates :grade_class, presence: true, if: -> { student? && !skip_validations }
 
     attr_accessor :skip_validations
 
@@ -34,4 +35,4 @@ class User < ApplicationRecord
     def student?
       role == 'student'
     end
-end
+  end

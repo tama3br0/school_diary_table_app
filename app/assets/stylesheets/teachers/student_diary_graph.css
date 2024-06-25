@@ -1,0 +1,70 @@
+/* app/assets/stylesheets/student_diary_graph.css */
+.student-diary-graph-container {
+    max-width: 1200px; /* コンテナの最大幅を設定 */
+    margin: 0 auto; /* 中央に配置 */
+    padding: 20px; /* パディングを追加 */
+  }
+
+  .student-diary-graph-title {
+      color: #333;
+  }
+
+  .student-diary-graph-tab-title {
+      color: #333;
+  }
+
+  .student-diary-graph-tabs {
+      overflow: hidden;
+      margin-bottom: 20px; /* タブの下に余白を追加 */
+      text-align: center; /* タブを中央揃え */
+  }
+
+  .student-diary-graph-tablink {
+      background-color: inherit;
+      display: inline-block; /* タブをインラインブロックに */
+      color: white; /* テキストカラーを白に */
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      transition: 0.3s;
+      margin-left: 16px;
+  }
+
+  .student-diary-graph-tablink:hover {
+      background-color: #0056b3;
+  }
+
+  .student-diary-graph-tablink.active {
+      background-color: #0056b3;
+  }
+
+  .student-diary-graph-tabcontent {
+      display: none;
+      padding: 20px;
+      border-top: none;
+      background-color: rgba(255, 255, 255, 0.8); /* 透過性のある白背景 */
+      border-radius: 10px; /* 角を丸める */
+      margin-top: 20px; /* 各タブコンテンツの上に余白を追加 */
+      color: #000; /* 文字を黒にする */
+  }
+
+  .student-diary-graph-chart-row {
+      display: flex;
+      gap: 20px;
+      justify-content: center; /* 中央に配置 */
+  }
+
+  .student-diary-graph-chart-container {
+      flex: 0 1 45%; /* グラフのサイズ調整 */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .student-diary-graph-canvas {
+      width: 100% !important;
+      height: auto !important;
+  }

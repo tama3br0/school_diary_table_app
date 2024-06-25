@@ -2,11 +2,11 @@ Rails.application.routes.draw do
     devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
 
     authenticated :user do
-      root to: 'pages#login_success', as: :authenticated_root
+      root to: 'pages#login_success', as: 'authenticated_root'
     end
 
     unauthenticated do
-      root to: 'home#index', as: :unauthenticated_root
+      root to: 'home#index', as: 'unauthenticated_root'
     end
 
     devise_scope :user do
@@ -32,8 +32,14 @@ Rails.application.routes.draw do
         get 'class_diary/:id',   to: 'diaries#class_diary',     as: 'class_diary'
         get 'student_diary/:id', to: 'diaries#student_diary',   as: 'student_diary'
 
-        get 'teacher/select_class',          to: 'teachers#select_class',   as: :select_class
-        get 'teacher/student_list/:id',      to: 'teachers#student_list',   as: :student_list
-        delete 'teacher/remove_student/:id', to: 'teachers#remove_student', as: :remove_student
+
+        get 'teacher/select_class',          to: 'teachers#select_class',   as: 'select_class'
+        get 'teacher/student_list/:id',      to: 'teachers#student_list',   as: 'student_list'
+        delete 'teacher/remove_student/:id', to: 'teachers#remove_student', as: 'remove_student'
+
+        # グラフ化
+        # get 'student_diary_graph/:id',          to: 'teachers#student_diary_graph',   as: 'student_diary_graph'
+        get 'teacher/select_class_graphs',      to: 'teachers#select_class_graphs',   as: 'select_class_graphs'
+        get 'teacher/emotion_distribution/:id', to: 'teachers#emotion_distribution',  as: 'emotion_distribution'
     end
 end
