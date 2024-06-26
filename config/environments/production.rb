@@ -5,8 +5,6 @@ Rails.application.configure do
   config.enable_reloading = false
 
   # ブート時にコードをイーガーロード
-  # これにより、スレッド化されたウェブサーバーや、コピーオンライトを利用するサーバーのパフォーマンスが向上
-  # Rakeタスクはパフォーマンスのためにこのオプションを自動的に無視
   config.eager_load = true
 
   # 完全なエラーレポートを無効にし、キャッシングを有効に
@@ -14,22 +12,18 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
 
   # マスターキーがENV["RAILS_MASTER_KEY"], config/master.key, または環境キーとして提供されていることを確認
-  # これらのキーは、認証情報や他の暗号化されたファイルを復号化するために使用
   # config.require_master_key = true
 
   # プリコンパイルされたアセットが見つからない場合にアセットパイプラインにフォールバックしない
   config.assets.compile = false
 
   # 追記: Active StorageでAWS S3を使用するための設定
-  # 追記した理由: アップロードファイルをAWS S3に保存するため
   config.active_storage.service = :amazon
 
   # 追記: SSLを強制
-  # 追記した理由: セキュリティを向上させるため
   config.force_ssl = true
 
   # 追記: STDOUTにログを出力
-  # 追記した理由: コンテナ環境でのログ管理を容易にするため
   config.logger = ActiveSupport::Logger.new(STDOUT)
     .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
     .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
@@ -62,4 +56,11 @@ Rails.application.configure do
 
   # マイグレーション後にスキーマをダンプしない
   config.active_record.dump_schema_after_migration = false
+
+  # 追記: アプリケーションのデフォルトURLオプションを設定
+  Rails.application.routes.default_url_options = { host: 'school-diary.xyz', protocol: 'https' }
+
+  # 追記: 許可されたホストを設定
+  config.hosts << "school-diary.xyz"
+  config.hosts << "www.school-diary.xyz"
 end
