@@ -35,4 +35,5 @@ class User < ApplicationRecord
     def student?
       role == 'student'
     end
-  end
+
+end
