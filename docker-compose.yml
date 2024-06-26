@@ -11,7 +11,10 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
   web:
-    build: .
+    build:
+      context: .
+      args:
+        AWS_REGION: ${AWS_REGION}  # 環境変数をDockerfileに渡す
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
     volumes:
       - '.:/rails'  # プロジェクトディレクトリを/railsにマウント

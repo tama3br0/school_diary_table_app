@@ -34,14 +34,18 @@ RUN bundle install && \
     bundle exec bootsnap precompile --gemfile
 COPY . .
 
-# ここで実行権限を追加
+# 実行権限を追加
 RUN chmod +x ./bin/rails
 
 RUN bundle exec bootsnap precompile app/ lib/
 
 RUN find bin -type f -exec dos2unix {} + && sed -i 's/ruby.exe$/ruby/' bin/*
 
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+# 環境変数を設定してアセットのプリコンパイルを実行
+ARG SECRET_KEY_BASE_DUMMY=1
+ARG AWS_REGION
+ENV AWS_REGION=${AWS_REGION}
+RUN ./bin/rails assets:precompile
 
 # 本番環境ステージ
 FROM base
