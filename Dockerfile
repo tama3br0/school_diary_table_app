@@ -17,9 +17,12 @@ FROM base as build
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git libvips pkg-config libmariadb-dev libmariadb3 default-mysql-client dos2unix curl
 
-# Add Node.js and Yarn
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
-    apt-get install -y nodejs && \
+# Add nvm, Node.js, and Yarn
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash && \
+    export NVM_DIR="$HOME/.nvm" && \
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && \
+    nvm install 18 && \
+    nvm use 18 && \
     npm install -g yarn
 
 # Bundlerインストール
