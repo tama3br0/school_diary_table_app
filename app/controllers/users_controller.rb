@@ -25,7 +25,6 @@ class UsersController < ApplicationController
           @user.save
           respond_to do |format|
             format.html { redirect_to authenticated_root_path, notice: 'とうろく できました！' }
-            format.turbo_stream { render turbo_stream: turbo_stream.replace("main_content", partial: "pages/login_success") }
           end
         else
           flash.now[:alert] = @user.errors.full_messages.join("\n")
@@ -33,9 +32,6 @@ class UsersController < ApplicationController
 
           respond_to do |format|
             format.html { render :additional_info }
-            format.turbo_stream {
-              render turbo_stream: turbo_stream.replace("additional_info_form", partial: "users/additional_info", locals: { user: @user })
-            }
           end
         end
       rescue => e
@@ -51,4 +47,4 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:role, :name, :student_num, :grade, :class_num, :school_code)
     end
-  end
+end
