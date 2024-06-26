@@ -20,14 +20,22 @@ class UsersController < ApplicationController
         @user.assign_attributes(user_params.except(:grade, :class_num, :school_code))
         @user.additional_info_provided = true
 
-        if @user.valid? && (teacher?(@user) || unique_combination?(@user, grade_class, @user.student_num))
+        if @user.valid? && unique_combination?(grade_class, @user.student_num)
           @user.save
-          redirect_to authenticated_root_path, notice: 'とうろく できました！'
+          respond_to do |format|
+            format.html { redirect_to authenticated_root_path, notice: 'とうろく できました！' }
+            format.turbo_stream { redirect_to authenticated_root_path, notice: 'とうろく できました！' }
+          end
         else
           flash.now[:alert] = @user.errors.full_messages.join("\n")
           flash.now[:alert] = "すでに とうろくされているひとが います" if @user.errors[:student_num].include?("すでに、ほかのひとが とうろく されています")
 
-          render :additional_info
+          respond_to do |format|
+            format.html { render :additional_info }
+            format.turbo_stream {
+              render turbo_stream: turbo_stream.replace("additional_info_form", partial: "users/additional_info_form", locals: { user: @user })
+            }
+          end
         end
     end
 
