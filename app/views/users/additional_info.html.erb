@@ -3,10 +3,9 @@
 <div class="additional_info_container">
     <h1>データを とうろく しよう！</h1>
 
-    <%= turbo_frame_tag "additional_info_form" do %>
-
-        <div data-controller="additional-info">
+    <div data-controller="additional-info">
+        <%= turbo_frame_tag "additional_info_form" do %>
             <%= render 'additional_info_form', user: @user %>
-        </div>
-    <% end %>
+        <% end %>
+     </div>
 </div>

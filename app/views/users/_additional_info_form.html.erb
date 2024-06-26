@@ -5,46 +5,46 @@
 <%= form_with model: user, url: save_additional_info_path, local: true, html: { class: 'additional-info-form' } do |f| %>
   <div class="field">
     <%= f.label :school_code, "がっこうコード ※ せんせいに、きいてね！" %>
-    <%= f.text_field :school_code %>
+    <%= text_field_tag 'user[school_code]', user.grade_class&.school_code, id: 'user_school_code' %>
   </div>
 
   <div class="field">
     <%= f.label :role, "あなたは、どっち？" %>
     <div class="button-group" id="role-buttons">
-      <button type="button" data-role="teacher">せんせい</button>
-      <button type="button" data-role="student">こども</button>
+      <button type="button" data-role="teacher" class="<%= 'active' if user.role == 'teacher' %>">せんせい</button>
+      <button type="button" data-role="student" class="<%= 'active' if user.role == 'student' %>">こども</button>
     </div>
-    <%= f.hidden_field :role %>
+    <%= f.hidden_field :role, value: user.role %>
   </div>
 
-  <div class="field" id="teacher-name" style="display: none;">
+  <div class="field" id="teacher-name" style="<%= user.role == 'teacher' ? 'display: block;' : 'display: none;' %>">
     <%= f.label :name, "名前 (先生の場合のみ)" %>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, value: user.name %>
   </div>
 
   <div class="field">
     <%= f.label :grade, "なんねんせい？" %>
     <div class="button-group" id="grade-buttons">
       <% (1..2).each do |grade| %>
-        <button type="button" data-grade="<%= grade %>"><%= grade %>ねんせい</button>
+        <button type="button" data-grade="<%= grade %>" class="<%= 'active' if user.grade_class&.grade.to_i == grade %>"><%= grade %>ねんせい</button>
       <% end %>
     </div>
-    <%= f.hidden_field :grade %>
+    <%= hidden_field_tag 'user[grade]', user.grade_class&.grade, id: 'user_grade' %>
   </div>
 
   <div class="field">
     <%= f.label :class_num, "なんくみ？" %>
     <div class="button-group" id="class-buttons">
       <% (1..6).each do |class_num| %>
-        <button type="button" data-class-num="<%= class_num %>"><%= class_num %>くみ</button>
+        <button type="button" data-class-num="<%= class_num %>" class="<%= 'active' if user.grade_class&.class_num.to_i == class_num %>"><%= class_num %>くみ</button>
       <% end %>
     </div>
-    <%= f.hidden_field :class_num %>
+    <%= hidden_field_tag 'user[class_num]', user.grade_class&.class_num, id: 'user_class_num' %>
   </div>
 
-  <div class="field" id="student-num" style="display: none;">
+  <div class="field" id="student-num" style="<%= user.role == 'student' ? 'display: block;' : 'display: none;' %>">
     <%= f.label :student_num, "しゅっせき ばんごう" %>
-    <%= f.select :student_num, (1..45).to_a, include_blank: "えらんでください！" %>
+    <%= f.select :student_num, (1..45).to_a, include_blank: "えらんでください！", selected: user.student_num %>
   </div>
 
   <div class="actions">
