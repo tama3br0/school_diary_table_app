@@ -5,12 +5,13 @@ FROM registry.hub.docker.com/library/ruby:$RUBY_VERSION-slim as base
 
 WORKDIR /rails
 
-ENV RAILS_ENV="development" \
-    BUNDLE_DEPLOYMENT="1" \
+# 共通環境変数設定
+ENV BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development" \
+    BUNDLE_WITHOUT="development test" \
     PATH="/usr/local/bundle/bin:/rails/bin:$PATH"
 
+# ビルドステージ
 FROM base as build
 
 RUN apt-get update -qq && \
@@ -21,14 +22,13 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
     apt-get install -y nodejs && \
     npm install -g yarn
 
-# Install the correct version of bundler
+# Bundlerインストール
 RUN gem install bundler -v '~> 2.5'
 
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
     bundle exec bootsnap precompile --gemfile
-
 COPY . .
 
 RUN bundle exec bootsnap precompile app/ lib/
@@ -37,6 +37,7 @@ RUN find bin -type f -exec dos2unix {} + && sed -i 's/ruby.exe$/ruby/' bin/*
 
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
+# 本番環境ステージ
 FROM base
 
 RUN apt-get update -qq && \
@@ -50,7 +51,6 @@ ENV PATH="/usr/local/bundle/bin:/rails/bin:$PATH"
 
 RUN useradd rails --create-home --shell /bin/bash && \
     chown -R rails:rails /rails
-
 COPY bin/docker-entrypoint /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
@@ -59,3 +59,4 @@ ENTRYPOINT ["docker-entrypoint"]
 
 EXPOSE 3000
 CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
+
