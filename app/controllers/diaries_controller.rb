@@ -52,7 +52,7 @@ class DiariesController < ApplicationController
     end
 
     def class_selection
-      @classes = GradeClass.joins(:users).where(school_code: current_user.grade_class.school_code, users: { role: 0 }).distinct
+        @classes = GradeClass.where(school_code: current_user.grade_class.school_code).order(:grade, :class_num)
     end
 
     def class_diary

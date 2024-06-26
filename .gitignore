@@ -33,3 +33,20 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ignore additional environment files
+.env
+
+# Ignore Docker-related files
+docker-compose.override.yml
+
+# Ignore system files
+.DS_Store
+.idea
+*.swp
+
+# Ignore node_modules
+node_modules/
+
+# Ignore uploads
+public/uploads

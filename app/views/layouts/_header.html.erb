@@ -14,6 +14,6 @@
             <%= link_to '登録児童一覧', select_class_path, class: 'header-button' %>
             <%= link_to 'グラフで見る', select_class_graphs_path, class: 'header-button' %>
         <% end %>
-        <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, data: { confirm: '本当にログアウトしますか？' }, class: 'header-button' %>
+        <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, data: { confirm: '本当にログアウトしますか？' }, class: 'logout-button' %>
     </div>
 </header>

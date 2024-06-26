@@ -9,6 +9,10 @@
   </div>
 
   <div id="daily" class="emotion-distribution-tabcontent">
+    <div class="navigation-buttons">
+      <button class="prev-day" onclick="navigateDate('previous', 'daily')">前日</button>
+      <button class="next-day" onclick="navigateDate('next', 'daily')">翌日</button>
+    </div>
     <h2 class="emotion-distribution-tab-title">本日の分布</h2>
     <div class="emotion-distribution-chart-row">
       <div class="emotion-distribution-chart-container">
@@ -31,6 +35,10 @@
   </div>
 
   <div id="monthly" class="emotion-distribution-tabcontent">
+    <div class="navigation-buttons">
+      <button class="prev-month" onclick="navigateDate('previous', 'monthly')">先月</button>
+      <button class="next-month" onclick="navigateDate('next', 'monthly')">翌月</button>
+    </div>
     <h2 class="emotion-distribution-tab-title">今月の分布</h2>
     <div class="emotion-distribution-chart-row">
       <div class="emotion-distribution-chart-container">
@@ -76,126 +84,233 @@
 </div>
 
 <script>
-  function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("emotion-distribution-tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("emotion-distribution-tablink");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
-
-    // スクロール位置を調整
-    var headerOffset = 70; // ヘッダーの高さを調整
-    var elementPosition = document.getElementById(tabName).offsetTop;
-    var offsetPosition = elementPosition - headerOffset;
-
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth'
-    });
-
-    renderCharts();
-  }
-
-  function renderCharts() {
-    var dailyCtx1 = document.getElementById('dailyQuestion1Chart').getContext('2d');
-    var dailyCtx2 = document.getElementById('dailyQuestion2Chart').getContext('2d');
-    var dailyCtx3 = document.getElementById('dailyQuestion3Chart').getContext('2d');
-    var dailyCtx4 = document.getElementById('dailyQuestion4Chart').getContext('2d');
-
-    var monthlyCtx1 = document.getElementById('monthlyQuestion1Chart').getContext('2d');
-    var monthlyCtx2 = document.getElementById('monthlyQuestion2Chart').getContext('2d');
-    var monthlyCtx3 = document.getElementById('monthlyQuestion3Chart').getContext('2d');
-    var monthlyCtx4 = document.getElementById('monthlyQuestion4Chart').getContext('2d');
-
-    var overallCtx1 = document.getElementById('overallQuestion1Chart').getContext('2d');
-    var overallCtx2 = document.getElementById('overallQuestion2Chart').getContext('2d');
-    var overallCtx3 = document.getElementById('overallQuestion3Chart').getContext('2d');
-    var overallCtx4 = document.getElementById('overallQuestion4Chart').getContext('2d');
-
-    var dailyQuestion1Data = <%= @daily_distribution[:question1].to_json.html_safe %>;
-    var dailyQuestion2Data = <%= @daily_distribution[:question2].to_json.html_safe %>;
-    var dailyQuestion3Data = <%= @daily_distribution[:question3].to_json.html_safe %>;
-    var dailyQuestion4Data = <%= @daily_distribution[:question4].to_json.html_safe %>;
-
-    var monthlyQuestion1Data = <%= @monthly_distribution[:question1].to_json.html_safe %>;
-    var monthlyQuestion2Data = <%= @monthly_distribution[:question2].to_json.html_safe %>;
-    var monthlyQuestion3Data = <%= @monthly_distribution[:question3].to_json.html_safe %>;
-    var monthlyQuestion4Data = <%= @monthly_distribution[:question4].to_json.html_safe %>;
-
-    var overallQuestion1Data = <%= @overall_distribution[:question1].to_json.html_safe %>;
-    var overallQuestion2Data = <%= @overall_distribution[:question2].to_json.html_safe %>;
-    var overallQuestion3Data = <%= @overall_distribution[:question3].to_json.html_safe %>;
-    var overallQuestion4Data = <%= @overall_distribution[:question4].to_json.html_safe %>;
-
-    function formatDataForPieChart(data, questionNum) {
-      var labels;
-      switch (questionNum) {
-        case 1:
-        case 3:
-          labels = ['とても たのしかった', 'たのしかった', 'すこしだけ たのしかった', 'たのしくなかった'];
-          break;
-        case 2:
-          labels = ['とても よくわかった', 'よくわかった', 'すこしだけ わかった', 'ぜんぜん わからなかった'];
-          break;
-        case 4:
-          labels = ['ぜんぶたべて おかわりもした', 'ぜんぶたべた', 'へらしたけれど ぜんぶたべた', 'のこしてしまった'];
-          break;
+    function openTab(evt, tabName) {
+      console.log("openTab called with tabName:", tabName);
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("emotion-distribution-tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
       }
-      var backgroundColors = ['#FF6384', '#4BC0C0', '#FFCE56', '#36A2EB'];
+      tablinks = document.getElementsByClassName("emotion-distribution-tablink");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " active";
 
-      var counts = [data[4] || 0, data[3] || 0, data[2] || 0, data[1] || 0];
+      // スクロール位置を調整
+      var headerOffset = 70; // ヘッダーの高さを調整
+      var elementPosition = document.getElementById(tabName).offsetTop;
+      var offsetPosition = elementPosition - headerOffset;
 
-      return {
-        labels: labels,
-        datasets: [{
-          data: counts,
-          backgroundColor: backgroundColors
-        }]
-      };
-    }
-
-    function createChart(ctx, data, questionNum) {
-      return new Chart(ctx, {
-        type: 'pie',
-        data: formatDataForPieChart(data, questionNum),
-        options: {
-          animation: {
-            animateScale: true,
-            animateRotate: true
-          }
-        }
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
       });
+
+      renderCharts();
     }
 
-    var dailyChart1 = createChart(dailyCtx1, dailyQuestion1Data, 1);
-    var dailyChart2 = createChart(dailyCtx2, dailyQuestion2Data, 2);
-    var dailyChart3 = createChart(dailyCtx3, dailyQuestion3Data, 3);
-    var dailyChart4 = createChart(dailyCtx4, dailyQuestion4Data, 4);
+    function renderCharts() {
+      console.log("renderCharts called");
+      var dailyCtx1 = document.getElementById('dailyQuestion1Chart').getContext('2d');
+      var dailyCtx2 = document.getElementById('dailyQuestion2Chart').getContext('2d');
+      var dailyCtx3 = document.getElementById('dailyQuestion3Chart').getContext('2d');
+      var dailyCtx4 = document.getElementById('dailyQuestion4Chart').getContext('2d');
 
-    var monthlyChart1 = createChart(monthlyCtx1, monthlyQuestion1Data, 1);
-    var monthlyChart2 = createChart(monthlyCtx2, monthlyQuestion2Data, 2);
-    var monthlyChart3 = createChart(monthlyCtx3, monthlyQuestion3Data, 3);
-    var monthlyChart4 = createChart(monthlyCtx4, monthlyQuestion4Data, 4);
+      var monthlyCtx1 = document.getElementById('monthlyQuestion1Chart').getContext('2d');
+      var monthlyCtx2 = document.getElementById('monthlyQuestion2Chart').getContext('2d');
+      var monthlyCtx3 = document.getElementById('monthlyQuestion3Chart').getContext('2d');
+      var monthlyCtx4 = document.getElementById('monthlyQuestion4Chart').getContext('2d');
 
-    var overallChart1 = createChart(overallCtx1, overallQuestion1Data, 1);
-    var overallChart2 = createChart(overallCtx2, overallQuestion2Data, 2);
-    var overallChart3 = createChart(overallCtx3, overallQuestion3Data, 3);
-    var overallChart4 = createChart(overallCtx4, overallQuestion4Data, 4);
-  }
+      var overallCtx1 = document.getElementById('overallQuestion1Chart').getContext('2d');
+      var overallCtx2 = document.getElementById('overallQuestion2Chart').getContext('2d');
+      var overallCtx3 = document.getElementById('overallQuestion3Chart').getContext('2d');
+      var overallCtx4 = document.getElementById('overallQuestion4Chart').getContext('2d');
 
-  document.addEventListener('DOMContentLoaded', function() {
-    renderCharts(); // 初期ロード時にチャートを描画
+      var dailyQuestion1Data = <%= @daily_distribution[:question1].to_json.html_safe %>;
+      var dailyQuestion2Data = <%= @daily_distribution[:question2].to_json.html_safe %>;
+      var dailyQuestion3Data = <%= @daily_distribution[:question3].to_json.html_safe %>;
+      var dailyQuestion4Data = <%= @daily_distribution[:question4].to_json.html_safe %>;
 
-    // タブがクリックされるたびにチャートを再描画
-    var tablinks = document.getElementsByClassName("tablink");
-    for (var i = 0; i < tablinks.length; i++) {
-      tablinks[i].addEventListener("click", renderCharts);
+      var monthlyQuestion1Data = <%= @monthly_distribution[:question1].to_json.html_safe %>;
+      var monthlyQuestion2Data = <%= @monthly_distribution[:question2].to_json.html_safe %>;
+      var monthlyQuestion3Data = <%= @monthly_distribution[:question3].to_json.html_safe %>;
+      var monthlyQuestion4Data = <%= @monthly_distribution[:question4].to_json.html_safe %>;
+
+      var overallQuestion1Data = <%= @overall_distribution[:question1].to_json.html_safe %>;
+      var overallQuestion2Data = <%= @overall_distribution[:question2].to_json.html_safe %>;
+      var overallQuestion3Data = <%= @overall_distribution[:question3].to_json.html_safe %>;
+      var overallQuestion4Data = <%= @overall_distribution[:question4].to_json.html_safe %>;
+
+      function formatDataForPieChart(data, questionNum) {
+        console.log("formatDataForPieChart called with questionNum:", questionNum);
+        var labels;
+        switch (questionNum) {
+          case 1:
+          case 3:
+            labels = ['とても たのしかった', 'たのしかった', 'すこしだけ たのしかった', 'たのしくなかった'];
+            break;
+          case 2:
+            labels = ['とても よくわかった', 'よくわかった', 'すこしだけ わかった', 'ぜんぜん わからなかった'];
+            break;
+          case 4:
+            labels = ['ぜんぶたべて おかわりもした', 'ぜんぶたべた', 'へらしたけれど ぜんぶたべた', 'のこしてしまった'];
+            break;
+        }
+        var backgroundColors = ['#FF6384', '#4BC0C0', '#FFCE56', '#36A2EB'];
+
+        var counts = [data[4] || 0, data[3] || 0, data[2] || 0, data[1] || 0];
+        var total = counts.reduce((a, b) => a + b, 0);
+        var percentages = counts.map(count => (count / total * 100).toFixed(1) + '%');
+
+        return {
+          labels: labels,
+          datasets: [{
+            data: counts,
+            backgroundColor: backgroundColors,
+            borderWidth: 1,
+            borderColor: '#ffffff',
+            hoverBorderColor: '#000000',
+          }],
+          percentages: percentages
+        };
+      }
+
+      function createChart(ctx, data, questionNum) {
+        console.log("createChart called with questionNum:", questionNum);
+        var formattedData = formatDataForPieChart(data, questionNum);
+        return new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: formattedData.labels,
+            datasets: formattedData.datasets
+          },
+          options: {
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, data) {
+                  var label = data.labels[tooltipItem.index];
+                  var value = data.datasets[0].data[tooltipItem.index];
+                  var percentage = formattedData.percentages[tooltipItem.index];
+                  return label + ': ' + value + ' (' + percentage + ')';
+                }
+              }
+            },
+            animation: {
+              animateScale: true,
+              animateRotate: true
+            }
+          }
+        });
+      }
+
+      console.log("Creating daily charts");
+      var dailyChart1 = createChart(dailyCtx1, dailyQuestion1Data, 1);
+      var dailyChart2 = createChart(dailyCtx2, dailyQuestion2Data, 2);
+      var dailyChart3 = createChart(dailyCtx3, dailyQuestion3Data, 3);
+      var dailyChart4 = createChart(dailyCtx4, dailyQuestion4Data, 4);
+
+      console.log("Creating monthly charts");
+      var monthlyChart1 = createChart(monthlyCtx1, monthlyQuestion1Data, 1);
+      var monthlyChart2 = createChart(monthlyCtx2, monthlyQuestion2Data, 2);
+      var monthlyChart3 = createChart(monthlyCtx3, monthlyQuestion3Data, 3);
+      var monthlyChart4 = createChart(monthlyCtx4, monthlyQuestion4Data, 4);
+
+      console.log("Creating overall charts");
+      var overallChart1 = createChart(overallCtx1, overallQuestion1Data, 1);
+      var overallChart2 = createChart(overallCtx2, overallQuestion2Data, 2);
+      var overallChart3 = createChart(overallCtx3, overallQuestion3Data, 3);
+      var overallChart4 = createChart(overallCtx4, overallQuestion4Data, 4);
     }
-  });
+
+    function navigateDate(direction, type) {
+      console.log("navigateDate called with direction:", direction, "and type:", type);
+      var gradeClassId = <%= @grade_class.id %>; // 現在のクラスIDを取得
+      var currentDate = new Date(); // 現在の日付を取得
+      if (type === 'daily') {
+        if (direction === 'previous') {
+          currentDate.setDate(currentDate.getDate() - 1);
+        } else if (direction === 'next') {
+          currentDate.setDate(currentDate.getDate() + 1);
+        }
+      } else if (type === 'monthly') {
+        if (direction === 'previous') {
+          currentDate.setMonth(currentDate.getMonth() - 1);
+        } else if (direction === 'next') {
+          currentDate.setMonth(currentDate.getMonth() + 1);
+        }
+      }
+
+      var formattedDate = currentDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'形式に変換
+      console.log("Formatted date:", formattedDate);
+      fetch(`/teacher/emotion_distribution/${gradeClassId}.json?date=${formattedDate}&type=${type}`)
+        .then(response => response.json())
+        .then(data => {
+          console.log("Data received:", data);
+          updateCharts(data, type);
+        })
+        .catch(error => console.error("Error fetching data:", error));
+    }
+
+    function updateCharts(data, type) {
+      console.log("updateCharts called with type:", type);
+      if (type === 'daily') {
+        updateDailyCharts(data.daily);
+      } else if (type === 'monthly') {
+        updateMonthlyCharts(data.monthly);
+      } else {
+        updateOverallCharts(data.overall);
+      }
+    }
+
+    function updateDailyCharts(dailyData) {
+      console.log("updateDailyCharts called with data:", dailyData);
+      var dailyCtx1 = document.getElementById('dailyQuestion1Chart').getContext('2d');
+      var dailyCtx2 = document.getElementById('dailyQuestion2Chart').getContext('2d');
+      var dailyCtx3 = document.getElementById('dailyQuestion3Chart').getContext('2d');
+      var dailyCtx4 = document.getElementById('dailyQuestion4Chart').getContext('2d');
+
+      createChart(dailyCtx1, dailyData.question1, 1);
+      createChart(dailyCtx2, dailyData.question2, 2);
+      createChart(dailyCtx3, dailyData.question3, 3);
+      createChart(dailyCtx4, dailyData.question4, 4);
+    }
+
+    function updateMonthlyCharts(monthlyData) {
+      console.log("updateMonthlyCharts called with data:", monthlyData);
+      var monthlyCtx1 = document.getElementById('monthlyQuestion1Chart').getContext('2d');
+      var monthlyCtx2 = document.getElementById('monthlyQuestion2Chart').getContext('2d');
+      var monthlyCtx3 = document.getElementById('monthlyQuestion3Chart').getContext('2d');
+      var monthlyCtx4 = document.getElementById('monthlyQuestion4Chart').getContext('2d');
+
+      createChart(monthlyCtx1, monthlyData.question1, 1);
+      createChart(monthlyCtx2, monthlyData.question2, 2);
+      createChart(monthlyCtx3, monthlyData.question3, 3);
+      createChart(monthlyCtx4, monthlyData.question4, 4);
+    }
+
+    function updateOverallCharts(overallData) {
+      console.log("updateOverallCharts called with data:", overallData);
+      var overallCtx1 = document.getElementById('overallQuestion1Chart').getContext('2d');
+      var overallCtx2 = document.getElementById('overallQuestion2Chart').getContext('2d');
+      var overallCtx3 = document.getElementById('overallQuestion3Chart').getContext('2d');
+      var overallCtx4 = document.getElementById('overallQuestion4Chart').getContext('2d');
+
+      createChart(overallCtx1, overallData.question1, 1);
+      createChart(overallCtx2, overallData.question2, 2);
+      createChart(overallCtx3, overallData.question3, 3);
+      createChart(overallCtx4, overallData.question4, 4);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log("DOMContentLoaded event fired");
+      renderCharts(); // 初期ロード時にチャートを描画
+
+      // タブがクリックされるたびにチャートを再描画
+      var tablinks = document.getElementsByClassName("tablink");
+      for (var i = 0; i < tablinks.length; i++) {
+        tablinks[i].addEventListener("click", renderCharts);
+      }
+    });
 </script>

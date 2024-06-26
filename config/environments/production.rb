@@ -1,97 +1,65 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  # Settings specified here will take precedence over those in config/application.rb.
-
-  # Code is not reloaded between requests.
+  # リクエスト間でコードがリロードされないように設定
   config.enable_reloading = false
 
-  # Eager load code on boot. This eager loads most of Rails and
-  # your application in memory, allowing both threaded web servers
-  # and those relying on copy on write to perform better.
-  # Rake tasks automatically ignore this option for performance.
+  # ブート時にコードをイーガーロード
+  # これにより、スレッド化されたウェブサーバーや、コピーオンライトを利用するサーバーのパフォーマンスが向上
+  # Rakeタスクはパフォーマンスのためにこのオプションを自動的に無視
   config.eager_load = true
 
-  # Full error reports are disabled and caching is turned on.
+  # 完全なエラーレポートを無効にし、キャッシングを有効に
   config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
-  # Ensures that a master key has been made available in ENV["RAILS_MASTER_KEY"], config/master.key, or an environment
-  # key such as config/credentials/production.key. This key is used to decrypt credentials (and other encrypted files).
+  # マスターキーがENV["RAILS_MASTER_KEY"], config/master.key, または環境キーとして提供されていることを確認
+  # これらのキーは、認証情報や他の暗号化されたファイルを復号化するために使用
   # config.require_master_key = true
 
-  # Disable serving static files from `public/`, relying on NGINX/Apache to do so instead.
-  # config.public_file_server.enabled = false
-
-  # Compress CSS using a preprocessor.
-  # config.assets.css_compressor = :sass
-
-  # Do not fall back to assets pipeline if a precompiled asset is missed.
+  # プリコンパイルされたアセットが見つからない場合にアセットパイプラインにフォールバックしない
   config.assets.compile = false
 
-  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  # config.asset_host = "http://assets.example.com"
+  # 追記: Active StorageでAWS S3を使用するための設定
+  # 追記した理由: アップロードファイルをAWS S3に保存するため
+  config.active_storage.service = :amazon
 
-  # Specifies the header that your server uses for sending files.
-  # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache
-  # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
-
-  # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
-
-  # Mount Action Cable outside main process or domain.
-  # config.action_cable.mount_path = nil
-  # config.action_cable.url = "wss://example.com/cable"
-  # config.action_cable.allowed_request_origins = [ "http://example.com", /http:\/\/example.*/ ]
-
-  # Assume all access to the app is happening through a SSL-terminating reverse proxy.
-  # Can be used together with config.force_ssl for Strict-Transport-Security and secure cookies.
-  # config.assume_ssl = true
-
-  # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
+  # 追記: SSLを強制
+  # 追記した理由: セキュリティを向上させるため
   config.force_ssl = true
 
-  # Log to STDOUT by default
+  # 追記: STDOUTにログを出力
+  # 追記した理由: コンテナ環境でのログ管理を容易にするため
   config.logger = ActiveSupport::Logger.new(STDOUT)
     .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
     .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
-  # Prepend all log lines with the following tags.
+  # すべてのログ行の先頭に以下のタグを付加
   config.log_tags = [ :request_id ]
 
-  # "info" includes generic and useful information about system operation, but avoids logging too much
-  # information to avoid inadvertent exposure of personally identifiable information (PII). If you
-  # want to log everything, set the level to "debug".
+  # "info" はシステム操作に関する一般的かつ有用な情報を含みますが、個人を特定できる情報 (PII) の不注意な露出を避けるためにあまり多くの情報をログに記録しません。
+  # すべてをログに記録したい場合は、レベルを "debug" に設定します。
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
-  # Use a different cache store in production.
+  # 本番環境で異なるキャッシュストアを使用
   # config.cache_store = :mem_cache_store
 
-  # Use a real queuing backend for Active Job (and separate queues per environment).
+  # Active Jobのために本格的なキューイングバックエンドを使用 (環境ごとに異なるキューを使用)
   # config.active_job.queue_adapter = :resque
   # config.active_job.queue_name_prefix = "school_diary_table_app_production"
 
   config.action_mailer.perform_caching = false
 
-  # Ignore bad email addresses and do not raise email delivery errors.
-  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
+  # 不正なメールアドレスを無視し、メール配信エラーを発生させない
+  # 配信エラーを発生させるために true に設定し、メールサーバーを即時配信に設定
   # config.action_mailer.raise_delivery_errors = false
 
-  # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
-  # the I18n.default_locale when a translation cannot be found).
+  # I18nのロケールフォールバックを有効に (翻訳が見つからない場合にI18n.default_localeにフォールバック)
   config.i18n.fallbacks = true
 
-  # Don't log any deprecations.
+  # 廃止予定の機能に関するログを記録しない
   config.active_support.report_deprecations = false
 
-  # Do not dump schema after migrations.
+  # マイグレーション後にスキーマをダンプしない
   config.active_record.dump_schema_after_migration = false
-
-  # Enable DNS rebinding protection and other `Host` header attacks.
-  # config.hosts = [
-  #   "example.com",     # Allow requests from example.com
-  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-  # ]
-  # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end

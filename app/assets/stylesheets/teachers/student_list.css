@@ -65,7 +65,7 @@
     padding: 5px 10px;
     font-size: 0.7em; /* 文字サイズを調整 */
     color: white;
-    background-color: #007bff;
+    background-color: #dc3545;
     border: none;
     border-radius: 5px;
     text-align: center;
@@ -74,5 +74,5 @@
 }
 
 .student-list-page .student-button-link:hover {
-    background-color: #0056b3;
+    background-color: #c82333;
 }

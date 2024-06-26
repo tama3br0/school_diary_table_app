@@ -52,3 +52,21 @@ header .header-button {
 header .header-button:hover {
     background-color: #0056b3;
 }
+
+header .logout-button {
+    background-color: #dc3545; /* 赤系統の色に変更 */
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+header .logout-button:hover {
+    background-color: #c82333; /* 赤系統の色に変更 */
+}

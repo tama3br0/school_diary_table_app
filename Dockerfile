@@ -1,22 +1,23 @@
 # syntax = docker/dockerfile:1
 
 ARG RUBY_VERSION=3.2.3
-FROM registry.hub.docker.com/library/ruby:$RUBY_VERSION-slim as base
+FROM ruby:$RUBY_VERSION-slim as base
 
 WORKDIR /rails
 
-ENV RAILS_ENV="development" \
-    BUNDLE_DEPLOYMENT="1" \
+# 共通環境変数設定
+ENV BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development" \
+    BUNDLE_WITHOUT="development test" \
     PATH="/usr/local/bundle/bin:/rails/bin:$PATH"
 
+# ビルドステージ
 FROM base as build
 
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git libvips pkg-config libmariadb-dev libmariadb3 default-mysql-client dos2unix
 
-# Install the correct version of bundler
+# Bundlerインストール
 RUN gem install bundler -v '~> 2.5'
 
 COPY Gemfile Gemfile.lock ./
@@ -32,6 +33,7 @@ RUN find bin -type f -exec dos2unix {} + && sed -i 's/ruby.exe$/ruby/' bin/*
 
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
+# 本番環境ステージ
 FROM base
 
 RUN apt-get update -qq && \
