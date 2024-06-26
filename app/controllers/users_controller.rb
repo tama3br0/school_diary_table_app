@@ -25,7 +25,7 @@ class UsersController < ApplicationController
           @user.save
           respond_to do |format|
             format.html { redirect_to authenticated_root_path, notice: 'とうろく できました！' }
-            format.turbo_stream { redirect_to authenticated_root_path, notice: 'とうろく できました！' }
+            format.turbo_stream { redirect_to authenticated_root_path, status: :see_other }
           end
         else
           flash.now[:alert] = @user.errors.full_messages.join("\n")
@@ -51,4 +51,4 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:role, :name, :student_num, :grade, :class_num, :school_code)
     end
-end
+  end
