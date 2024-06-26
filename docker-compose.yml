@@ -14,8 +14,11 @@ services:
     build:
       context: .
       args:
-        AWS_REGION: ${AWS_REGION}  # 環境変数をDockerfileに渡す
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
+        AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+        AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+        AWS_REGION: ${AWS_REGION}
+        AWS_BUCKET: ${AWS_BUCKET}
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rake assets:precompile && bundle exec rails s -b '0.0.0.0'"
     volumes:
       - '.:/rails'  # プロジェクトディレクトリを/railsにマウント
       - './db:/rails/db'  # dbディレクトリを明示的にマウント
@@ -27,6 +30,10 @@ services:
       - .env
     environment:
       - RAILS_ENV=${RAILS_ENV}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_BUCKET=${AWS_BUCKET}
 
 volumes:
   db_data:

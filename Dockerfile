@@ -15,9 +15,9 @@ ENV BUNDLE_DEPLOYMENT="1" \
 FROM base as build
 
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libvips pkg-config libmariadb-dev libmariadb3 default-mysql-client dos2unix curl
+    apt-get install --no-install-recommends -y build-essential git libvips pkg-config libmariadb-dev libmariadb3 default-mysql-client dos2unix curl nodejs
 
-# Add nvm, Node.js, and Yarn
+# Add nvm and Yarn
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash && \
     export NVM_DIR="$HOME/.nvm" && \
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && \
@@ -34,17 +34,24 @@ RUN bundle install && \
     bundle exec bootsnap precompile --gemfile
 COPY . .
 
-# 実行権限を追加
+# ここで実行権限を追加
 RUN chmod +x ./bin/rails
 
 RUN bundle exec bootsnap precompile app/ lib/
 
 RUN find bin -type f -exec dos2unix {} + && sed -i 's/ruby.exe$/ruby/' bin/*
 
-# 環境変数を設定してアセットのプリコンパイルを実行
-ARG SECRET_KEY_BASE_DUMMY=1
+# ここで環境変数を設定
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
 ARG AWS_REGION
-ENV AWS_REGION=${AWS_REGION}
+ARG AWS_BUCKET
+
+ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+    AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+    AWS_REGION=$AWS_REGION \
+    AWS_BUCKET=$AWS_BUCKET
+
 RUN ./bin/rails assets:precompile
 
 # 本番環境ステージ
