@@ -34,6 +34,9 @@ RUN bundle install && \
     bundle exec bootsnap precompile --gemfile
 COPY . .
 
+# ここで実行権限を追加
+RUN chmod +x ./bin/rails
+
 RUN bundle exec bootsnap precompile app/ lib/
 
 RUN find bin -type f -exec dos2unix {} + && sed -i 's/ruby.exe$/ruby/' bin/*
@@ -62,5 +65,3 @@ ENTRYPOINT ["docker-entrypoint"]
 
 EXPOSE 3000
 CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
-
-# Dockerfileがコンフリクトしないかチェック
