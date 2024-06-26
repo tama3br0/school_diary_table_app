@@ -22,22 +22,15 @@ class UsersController < ApplicationController
 
         if @user.valid? && (teacher?(@user) || unique_combination?(@user, grade_class, @user.student_num))
           @user.save
-          respond_to do |format|
-            format.html { redirect_to authenticated_root_path, notice: 'とうろく できました！' }
-            format.turbo_stream { redirect_to authenticated_root_path, notice: 'とうろく できました！' }
-          end
+          redirect_to authenticated_root_path, notice: 'とうろく できました！'
         else
           flash.now[:alert] = @user.errors.full_messages.join("\n")
           flash.now[:alert] = "すでに とうろくされているひとが います" if @user.errors[:student_num].include?("すでに、ほかのひとが とうろく されています")
 
-          respond_to do |format|
-            format.html { render :additional_info }
-            format.turbo_stream {
-              render turbo_stream: turbo_stream.replace("additional_info_form", partial: "users/additional_info_form", locals: { user: @user })
-            }
-          end
+          render :additional_info
         end
     end
+
 
     private
 
