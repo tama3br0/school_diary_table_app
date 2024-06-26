@@ -4,8 +4,6 @@
     <h1>データを とうろく しよう！</h1>
 
     <div data-controller="additional-info">
-        <%= turbo_frame_tag "additional_info_form" do %>
             <%= render 'users/additional_info_form', user: @user %>
-        <% end %>
      </div>
 </div>
