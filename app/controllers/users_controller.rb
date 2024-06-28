@@ -32,7 +32,7 @@ class UsersController < ApplicationController
                 end
             else
                 respond_to do |format|
-                    format.html { redirect_to additional_info_path, notice: 'すでに とうろくされているひとが います' }
+                    format.html { redirect_to additional_info_path, alert: 'すでに とうろくされているひとが います' }
                 end
             end
         rescue => e
