@@ -12,11 +12,11 @@ module ApplicationHelper
     # 追加するヘルパーメソッド
     def date_classes(date)
         classes = []
-        classes << "today" if date == Date.today
-        classes << "past" if date < Date.today
-        classes << "future" if date > Date.today
-        classes << "current-month" if date.month == Date.today.month
-        classes << "not-current-month" if date.month != Date.today.month
+        classes << "today" if date == Date.current
+        classes << "past" if date < Date.current
+        classes << "future" if date > Date.current
+        classes << "current-month" if date.month == Date.current.month
+        classes << "not-current-month" if date.month != Date.current.month
         classes.join(" ")
     end
 end

@@ -1,86 +1,85 @@
 <% provide(:title, '円グラフ') %>
 <div class="emotion-distribution-container">
-  <h1 class="emotion-distribution-graphs-title">回答の分布 - <%= @grade_class.grade %>年<%= @grade_class.class_num %>組</h1>
+    <h1 class="emotion-distribution-graphs-title">回答の分布 - <%= @grade_class.grade %>年<%= @grade_class.class_num %>組</h1>
 
-  <div class="emotion-distribution-tabs">
-    <button class="emotion-distribution-tablink" onclick="openTab(event, 'daily')">日別</button>
-    <button class="emotion-distribution-tablink" onclick="openTab(event, 'monthly')">月別</button>
-    <button class="emotion-distribution-tablink" onclick="openTab(event, 'overall')">統計</button>
-  </div>
-
-  <div id="daily" class="emotion-distribution-tabcontent">
-    <div class="navigation-buttons">
-      <button class="prev-day" onclick="navigateDate('previous', 'daily')">前日</button>
-      <button class="next-day" onclick="navigateDate('next', 'daily')">翌日</button>
+    <div class="emotion-distribution-tabs">
+        <button class="emotion-distribution-tablink" onclick="openTab(event, 'daily')">日別</button>
+        <button class="emotion-distribution-tablink" onclick="openTab(event, 'monthly')">月別</button>
+        <button class="emotion-distribution-tablink" onclick="openTab(event, 'overall')">統計</button>
     </div>
-    <h2 class="emotion-distribution-tab-title">本日の分布</h2>
-    <div class="emotion-distribution-chart-row">
-      <div class="emotion-distribution-chart-container">
-        <h3 class="emotion-distribution-chart-title">学校は、楽しかったですか？</h3>
-        <canvas class="emotion-distribution-canvas" id="dailyQuestion1Chart" width="400" height="400"></canvas>
-      </div>
-      <div class="emotion-distribution-chart-container">
-        <h3 class="emotion-distribution-chart-title">勉強は、よく分かりましたか？</h3>
-        <canvas class="emotion-distribution-canvas" id="dailyQuestion2Chart" width="400" height="400"></canvas>
-      </div>
-      <div class="emotion-distribution-chart-container">
-        <h3 class="emotion-distribution-chart-title">休み時間は、楽しく遊べましたか？</h3>
-        <canvas class="emotion-distribution-canvas" id="dailyQuestion3Chart" width="400" height="400"></canvas>
-      </div>
-      <div class="emotion-distribution-chart-container">
-        <h3 class="emotion-distribution-chart-title">給食は、残さず食べられましたか？</h3>
-        <canvas class="emotion-distribution-canvas" id="dailyQuestion4Chart" width="400" height="400"></canvas>
-      </div>
-    </div>
-  </div>
 
-  <div id="monthly" class="emotion-distribution-tabcontent">
+    <div id="daily" class="emotion-distribution-tabcontent">
+        <div class="navigation-buttons">
+            <button class="prev-day" onclick="navigateDate('previous', 'daily')">前日</button>
+            <button class="next-day" onclick="navigateDate('next', 'daily')">翌日</button>
+        </div>
+        <h2 class="emotion-distribution-tab-title">本日の分布</h2>
+        <div class="emotion-distribution-chart-row">
+        <div class="emotion-distribution-chart-container">
+            <h3 class="emotion-distribution-chart-title">学校は、楽しかったですか？</h3>
+            <canvas class="emotion-distribution-canvas" id="dailyQuestion1Chart" width="400" height="400"></canvas>
+        </div>
+        <div class="emotion-distribution-chart-container">
+            <h3 class="emotion-distribution-chart-title">勉強は、よく分かりましたか？</h3>
+            <canvas class="emotion-distribution-canvas" id="dailyQuestion2Chart" width="400" height="400"></canvas>
+        </div>
+        <div class="emotion-distribution-chart-container">
+            <h3 class="emotion-distribution-chart-title">休み時間は、楽しく遊べましたか？</h3>
+            <canvas class="emotion-distribution-canvas" id="dailyQuestion3Chart" width="400" height="400"></canvas>
+        </div>
+        <div class="emotion-distribution-chart-container">
+            <h3 class="emotion-distribution-chart-title">給食は、残さず食べられましたか？</h3>
+            <canvas class="emotion-distribution-canvas" id="dailyQuestion4Chart" width="400" height="400"></canvas>
+        </div>
+    </div>
+</div>
+
+<div id="monthly" class="emotion-distribution-tabcontent">
     <div class="navigation-buttons">
-      <button class="prev-month" onclick="navigateDate('previous', 'monthly')">先月</button>
-      <button class="next-month" onclick="navigateDate('next', 'monthly')">翌月</button>
+        <button class="prev-month" onclick="navigateDate('previous', 'monthly')">先月</button>
+        <button class="next-month" onclick="navigateDate('next', 'monthly')">翌月</button>
     </div>
     <h2 class="emotion-distribution-tab-title">今月の分布</h2>
     <div class="emotion-distribution-chart-row">
-      <div class="emotion-distribution-chart-container">
-        <h3 class="emotion-distribution-chart-title">学校は、楽しかったですか？</h3>
-        <canvas class="emotion-distribution-canvas" id="monthlyQuestion1Chart" width="400" height="400"></canvas>
-      </div>
-      <div class="emotion-distribution-chart-container">
-        <h3 class="emotion-distribution-chart-title">勉強は、よく分かりましたか？</h3>
-        <canvas class="emotion-distribution-canvas" id="monthlyQuestion2Chart" width="400" height="400"></canvas>
-      </div>
-      <div class="emotion-distribution-chart-container">
-        <h3 class="emotion-distribution-chart-title">休み時間は、楽しく遊べましたか？</h3>
-        <canvas class="emotion-distribution-canvas" id="monthlyQuestion3Chart" width="400" height="400"></canvas>
-      </div>
-      <div class="emotion-distribution-chart-container">
-        <h3 class="emotion-distribution-chart-title">給食は、残さず食べられましたか？</h3>
-        <canvas class="emotion-distribution-canvas" id="monthlyQuestion4Chart" width="400" height="400"></canvas>
-      </div>
+        <div class="emotion-distribution-chart-container">
+            <h3 class="emotion-distribution-chart-title">学校は、楽しかったですか？</h3>
+            <canvas class="emotion-distribution-canvas" id="monthlyQuestion1Chart" width="400" height="400"></canvas>
+        </div>
+        <div class="emotion-distribution-chart-container">
+            <h3 class="emotion-distribution-chart-title">勉強は、よく分かりましたか？</h3>
+            <canvas class="emotion-distribution-canvas" id="monthlyQuestion2Chart" width="400" height="400"></canvas>
+        </div>
+        <div class="emotion-distribution-chart-container">
+            <h3 class="emotion-distribution-chart-title">休み時間は、楽しく遊べましたか？</h3>
+            <canvas class="emotion-distribution-canvas" id="monthlyQuestion3Chart" width="400" height="400"></canvas>
+        </div>
+        <div class="emotion-distribution-chart-container">
+            <h3 class="emotion-distribution-chart-title">給食は、残さず食べられましたか？</h3>
+            <canvas class="emotion-distribution-canvas" id="monthlyQuestion4Chart" width="400" height="400"></canvas>
+        </div>
     </div>
-  </div>
+</div>
 
-  <div id="overall" class="emotion-distribution-tabcontent">
+<div id="overall" class="emotion-distribution-tabcontent">
     <h2 class="emotion-distribution-tab-title">統計</h2>
     <div class="emotion-distribution-chart-row">
-      <div class="emotion-distribution-chart-container">
-        <h3 class="emotion-distribution-chart-title">学校は、楽しかったですか？</h3>
-        <canvas class="emotion-distribution-canvas" id="overallQuestion1Chart" width="400" height="400"></canvas>
-      </div>
-      <div class="emotion-distribution-chart-container">
-        <h3 class="emotion-distribution-chart-title">勉強は、よく分かりましたか？</h3>
-        <canvas class="emotion-distribution-canvas" id="overallQuestion2Chart" width="400" height="400"></canvas>
-      </div>
-      <div class="emotion-distribution-chart-container">
-        <h3 class="emotion-distribution-chart-title">休み時間は、楽しく遊べましたか？</h3>
-        <canvas class="emotion-distribution-canvas" id="overallQuestion3Chart" width="400" height="400"></canvas>
-      </div>
-      <div class="emotion-distribution-chart-container">
-        <h3 class="emotion-distribution-chart-title">給食は、残さず食べられましたか？</h3>
-        <canvas class="emotion-distribution-canvas" id="overallQuestion4Chart" width="400" height="400"></canvas>
-      </div>
+        <div class="emotion-distribution-chart-container">
+            <h3 class="emotion-distribution-chart-title">学校は、楽しかったですか？</h3>
+            <canvas class="emotion-distribution-canvas" id="overallQuestion1Chart" width="400" height="400"></canvas>
+        </div>
+        <div class="emotion-distribution-chart-container">
+            <h3 class="emotion-distribution-chart-title">勉強は、よく分かりましたか？</h3>
+            <canvas class="emotion-distribution-canvas" id="overallQuestion2Chart" width="400" height="400"></canvas>
+        </div>
+        <div class="emotion-distribution-chart-container">
+            <h3 class="emotion-distribution-chart-title">休み時間は、楽しく遊べましたか？</h3>
+            <canvas class="emotion-distribution-canvas" id="overallQuestion3Chart" width="400" height="400"></canvas>
+        </div>
+        <div class="emotion-distribution-chart-container">
+            <h3 class="emotion-distribution-chart-title">給食は、残さず食べられましたか？</h3>
+            <canvas class="emotion-distribution-canvas" id="overallQuestion4Chart" width="400" height="400"></canvas>
+        </div>
     </div>
-  </div>
 </div>
 
 <script>
@@ -227,6 +226,7 @@
     function navigateDate(direction, type) {
       console.log("navigateDate called with direction:", direction, "and type:", type);
       var gradeClassId = <%= @grade_class.id %>; // 現在のクラスIDを取得
+      console.log("gradeClassIDを見る:", gradeClassId);
       var currentDate = new Date(); // 現在の日付を取得
       if (type === 'daily') {
         if (direction === 'previous') {

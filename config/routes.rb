@@ -1,12 +1,15 @@
 Rails.application.routes.draw do
+    # usersというリソース全体に対しての設定のため、複数形
+    # ユーザー全体に対する操作や、ユーザーの集合に対するアクションを
     devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
 
+    # 特定のユーザーに対する操作のため、単数形
     authenticated :user do
-      root to: 'pages#login_success', as: 'authenticated_root'
+        root to: 'pages#login_success', as: 'authenticated_root'
     end
 
     unauthenticated do
-      root to: 'home#index', as: 'unauthenticated_root'
+        root to: 'home#index', as: 'unauthenticated_root'
     end
 
     devise_scope :user do
@@ -19,7 +22,7 @@ Rails.application.routes.draw do
     get 'users/additional_info',        to: 'users#additional_info',      as: 'additional_info'
     patch 'users/save_additional_info', to: 'users#save_additional_info', as: 'save_additional_info'
 
-    # Diaries routes
+    # 日記リソースの集合全体を設定したいので複数形。この設定により、複数の日記に対するアクションが可能
     resources :diaries, only: [:new, :create, :index, :show] do
         collection do
             get  'new_for_student/:student_id',     to: 'diaries#new_for_student',      as: 'new_for_student'
