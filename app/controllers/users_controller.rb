@@ -31,11 +31,8 @@ class UsersController < ApplicationController
                     format.html { redirect_to authenticated_root_path, notice: 'とうろく できました！' }
                 end
             else
-                flash.now[:alert] = @user.errors.full_messages.join("\n")
-                flash.now[:alert] = "すでに とうろくされているひとが います" if @user.errors[:student_num].include?("すでに、ほかのひとが とうろく されています")
-
                 respond_to do |format|
-                    format.html { render :additional_info }
+                    format.html { redirect_to additional_info_path, notice: 'すでに とうろくされているひとが います' }
                 end
             end
         rescue => e
