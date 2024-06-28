@@ -195,10 +195,15 @@
         };
     }
 
-    function createChart(ctx, data, questionNum) {
+    async function createChart(ctx, data, questionNum) {
         console.log("createChart called with questionNum:", questionNum);
         var formattedData = formatDataForPieChart(data, questionNum);
-        window.myChart = new Chart(ctx, {
+
+        console.log("myChart: ",myChart);
+        if (myChart) {
+            await myChart.destroy();
+        }
+        let myChart = new Chart(ctx, {
             type: 'pie',
             data: {
                 labels: formattedData.labels,
@@ -221,6 +226,7 @@
                 }
             }
         });
+        return myChart
     }
 
     function navigateDate(direction, type) {
@@ -270,10 +276,6 @@
       var dailyCtx2 = document.getElementById('dailyQuestion2Chart').getContext('2d');
       var dailyCtx3 = document.getElementById('dailyQuestion3Chart').getContext('2d');
       var dailyCtx4 = document.getElementById('dailyQuestion4Chart').getContext('2d');
-
-      if (myChart) {
-        myChart.destroy();
-      }
 
       createChart(dailyCtx1, dailyData.question1, 1);
       createChart(dailyCtx2, dailyData.question2, 2);
