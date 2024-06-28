@@ -198,7 +198,7 @@
     function createChart(ctx, data, questionNum) {
         console.log("createChart called with questionNum:", questionNum);
         var formattedData = formatDataForPieChart(data, questionNum);
-        return new Chart(ctx, {
+        window.myChart = Chart(ctx, {
             type: 'pie',
             data: {
                 labels: formattedData.labels,
