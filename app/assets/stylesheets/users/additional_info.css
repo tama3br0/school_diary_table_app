@@ -15,7 +15,7 @@ body {
     text-align: center;
 }
 
-form.additional-info-form {
+.additional-info-form {
     background: rgba(0, 0, 0, 0.6); /* 背景色を濃くして文字を見やすくする */
     padding: 20px;
     border-radius: 10px;
@@ -25,7 +25,7 @@ form.additional-info-form {
     color: white;
 }
 
-.additional_info_container {
+.additional-info-container {
     color: #333;
     padding: 240px 0 80px 0;
     min-height: 100vh; /* 要素が背景画像の高さを超えたときに対応 */

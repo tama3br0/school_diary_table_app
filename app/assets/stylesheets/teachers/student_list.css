@@ -5,14 +5,14 @@
     margin-top: 420px;
 }
 
-.student-list-page .page-title {
+.student-list-title {
     font-size: 2em;
     font-weight: bold;
     text-align: center;
     margin: 20px 0;
 }
 
-.student-list-page .back-link {
+.student-list-back-link {
     display: block;
     text-align: center;
     margin: 10px 0;
@@ -20,23 +20,23 @@
     text-decoration: none;
 }
 
-.student-list-page .back-link:hover {
+.student-list-back-link:hover {
     text-decoration: underline;
 }
 
-.student-list-page .student-table {
+.student-list-table {
     display: flex;
     justify-content: space-around;
     gap: 10px; /* 列間のスペースを追加 */
 }
 
-.student-list-page .student-column {
+.student-list-column {
     flex: 1;
     margin: 0 10px;
     min-width: 200px; /* 列の最小幅を設定 */
 }
 
-.student-list-page .student-row {
+.student-list-row {
     display: flex;
     justify-content: space-between;
     align-items: center; /* 垂直方向の中央揃え */
@@ -49,18 +49,18 @@
     word-wrap: break-word;
 }
 
-.student-list-page .student-number,
-.student-list-page .student-action {
+.student-list-number,
+.student-list-action {
     flex: 1;
     font-size: 1.6em; /* フォントサイズを統一 */
     text-align: center; /* 中央揃え */
 }
 
-.student-list-page .student-action {
+.student-list-action {
     text-align: right;
 }
 
-.student-list-page .student-button-link {
+.student-list-button-link {
     display: inline-block;
     padding: 5px 10px;
     font-size: 0.7em; /* 文字サイズを調整 */
@@ -73,6 +73,6 @@
     cursor: pointer;
 }
 
-.student-list-page .student-button-link:hover {
+.student-list-button-link:hover {
     background-color: #c82333;
 }

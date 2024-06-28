@@ -1,29 +1,29 @@
 <% provide(:title, 'ダッシュボード') %>
-<main>
-    <h1>
+<main class="login-success-container">
+    <h1 class="login-success-title">
         <%= display_user_greeting(user_info(current_user)) %>
     </h1>
     <div id="flash_messages">
-      <%= render 'layouts/flash' %>
+        <%= render 'layouts/flash' %>
     </div>
 
     <div class="diary-buttons">
         <%= link_to 'にっきをかく', new_diary_path, class: 'diary-button write_diary_button' %>
         <% if user_info(current_user)[:role] == 'teacher' %>
-          <%= link_to 'にっきをみる', class_selection_path, class: 'diary-button show_diary_button' %>
+            <%= link_to 'にっきをみる', class_selection_path, class: 'diary-button show_diary_button' %>
         <% end %>
     </div>
 
     <div id="calendar" class="calendar">
-      <%= render 'simple_calendar/month_calendar', start_date: @start_date, previous_link: @previous_link, today_link: @today_link, next_link: @next_link, weeks: @weeks do |date, diaries_for_date| %>
-        <div class="day <%= 'today' if date == Time.zone.today %>">
-          <div class="date-number"><%= date.day %></div>
-          <% diaries_for_date.each do |diary| %>
-            <% diary.stamps.each do |stamp| %>
-              <%= link_to image_tag(stamp.stamp_image, class: 'diary-stamp'), diary_path(diary) %>
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
+        <%= render 'simple_calendar/month_calendar', start_date: @start_date, previous_link: @previous_link, today_link: @today_link, next_link: @next_link, weeks: @weeks do |date, diaries_for_date| %>
+            <div class="day <%= 'today' if date == Time.zone.today %>">
+                <div class="date-number"><%= date.day %></div>
+                <% diaries_for_date.each do |diary| %>
+                    <% diary.stamps.each do |stamp| %>
+                        <%= link_to image_tag(stamp.stamp_image, class: 'diary-stamp'), diary_path(diary) %>
+                    <% end %>
+                <% end %>
+            </div>
+        <% end %>
     </div>
 </main>

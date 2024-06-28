@@ -1,19 +1,18 @@
 /* diaries/calendar.css */
-#calendar {
-    width: 100%;
+.calendar {
     border-collapse: collapse;
     margin: 0 auto;
     padding: 32px;
-  }
+}
 
-  #calendar th, #calendar td {
+.calendar th, .calendar td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: center;
     vertical-align: top;
   }
 
-  .calendar-heading {
+.calendar-heading {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -80,31 +79,31 @@
   }
 
   /* 日付セルのスタイリング */
-  .day {
+.day {
     color: #333;
     position: relative;
     height: 100px;
     width: 100px;
     box-sizing: border-box;
     background-color: #f9f9f9;
-  }
+}
 
-  .day:hover {
+.day:hover {
     background-color: #f1f1f1;
   }
 
   /* 今日の日付のスタイリング */
-  .today {
+.today {
     background-color: #ffffcc; /* 淡い黄色 */
-  }
+}
 
-  .date-number {
+.date-number {
     font-size: 18px;
     font-weight: bold;
-  }
+}
 
   /* スタンプのスタイリング */
-  .diary-stamp {
+.diary-stamp {
     position: absolute;
     top: 50%;
     left: 50%;

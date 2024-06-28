@@ -14,28 +14,28 @@ header {
     height: 70px; /* ヘッダーの高さを固定 */
 }
 
-header .left-section {
+.left-section {
     display: flex;
     align-items: center;
 }
 
-header .left-section .logo img {
+.logo img {
     height: 50px;
     margin-right: 10px; /* ロゴとテキストの間にスペースを追加 */
 }
 
-header .left-section .school-code {
+.school-code {
     font-size: 1.2em;
     color: white; /* 文字色を白に設定 */
 }
 
-header .right-section {
+.right-section {
     display: flex;
     align-items: center;
     justify-content: flex-end;
 }
 
-header .header-button {
+.header-button {
     background-color: #007bff;
     color: white;
     padding: 10px 20px;
@@ -49,11 +49,11 @@ header .header-button {
     margin-right: 10px;
 }
 
-header .header-button:hover {
+.header-button:hover {
     background-color: #0056b3;
 }
 
-header .logout-button {
+.logout-button {
     background-color: #dc3545; /* 赤系統の色に変更 */
     color: white;
     padding: 10px 20px;
@@ -67,6 +67,7 @@ header .logout-button {
     margin-right: 10px;
 }
 
-header .logout-button:hover {
+.logout-button:hover {
     background-color: #c82333; /* 赤系統の色に変更 */
 }
+
