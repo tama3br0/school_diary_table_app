@@ -199,7 +199,7 @@
         console.log("createChart called with questionNum:", questionNum);
         var formattedData = formatDataForPieChart(data, questionNum);
         console.log("typeof myChart:", typeof myChart);
-        if (typeof myChart === 'undefined'|| !myChart) {
+        if (typeof myChart !== 'undefined'|| !myChart) {
             await myChart.destroy();
         }
         window.myChart = new Chart(ctx, {
