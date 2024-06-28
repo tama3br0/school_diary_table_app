@@ -1,6 +1,6 @@
-<% if flash[:alert] %>
-  <div class="alert alert-danger"><%= flash[:alert] %></div>
-<% end %>
+<div id="flash_messages">
+    <%= render 'layouts/flash' %>
+</div>
 
 <%= form_with model: user, url: save_additional_info_path, local: true, html: { class: 'additional-info-form' } do |f| %>
   <div class="field">
