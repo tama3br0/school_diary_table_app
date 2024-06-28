@@ -271,6 +271,10 @@
       var dailyCtx3 = document.getElementById('dailyQuestion3Chart').getContext('2d');
       var dailyCtx4 = document.getElementById('dailyQuestion4Chart').getContext('2d');
 
+      if (myChart) {
+        myChart.destroy();
+      }
+
       createChart(dailyCtx1, dailyData.question1, 1);
       createChart(dailyCtx2, dailyData.question2, 2);
       createChart(dailyCtx3, dailyData.question3, 3);
