@@ -198,9 +198,8 @@
     async function createChart(ctx, data, questionNum) {
         console.log("createChart called with questionNum:", questionNum);
         var formattedData = formatDataForPieChart(data, questionNum);
-
-        console.log("myChart: ",myChart);
-        if (myChart) {
+        console.log("typeof myChart:", typeof myChart);
+        if (typeof myChart === 'undefined'|| !myChart) {
             await myChart.destroy();
         }
         window.myChart = new Chart(ctx, {
