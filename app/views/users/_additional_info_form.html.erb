@@ -53,7 +53,7 @@
 <% end %>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
+  function initializeForm() {
     const roleButtons = document.querySelectorAll("#role-buttons button");
     const gradeButtons = document.querySelectorAll("#grade-buttons button");
     const classButtons = document.querySelectorAll("#class-buttons button");
@@ -143,5 +143,7 @@
         alert(errorMessage);
       }
     });
-  });
+  }
+
+  document.addEventListener("turbo:load", initializeForm);
 </script>
