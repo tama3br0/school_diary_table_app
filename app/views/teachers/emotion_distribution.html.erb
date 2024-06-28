@@ -142,7 +142,26 @@
         var overallQuestion3Data = <%= @overall_distribution[:question3].to_json.html_safe %>;
         var overallQuestion4Data = <%= @overall_distribution[:question4].to_json.html_safe %>;
 
-        function formatDataForPieChart(data, questionNum) {
+        console.log("Creating daily charts");
+        var dailyChart1 = createChart(dailyCtx1, dailyQuestion1Data, 1);
+        var dailyChart2 = createChart(dailyCtx2, dailyQuestion2Data, 2);
+        var dailyChart3 = createChart(dailyCtx3, dailyQuestion3Data, 3);
+        var dailyChart4 = createChart(dailyCtx4, dailyQuestion4Data, 4);
+
+        console.log("Creating monthly charts");
+        var monthlyChart1 = createChart(monthlyCtx1, monthlyQuestion1Data, 1);
+        var monthlyChart2 = createChart(monthlyCtx2, monthlyQuestion2Data, 2);
+        var monthlyChart3 = createChart(monthlyCtx3, monthlyQuestion3Data, 3);
+        var monthlyChart4 = createChart(monthlyCtx4, monthlyQuestion4Data, 4);
+
+        console.log("Creating overall charts");
+        var overallChart1 = createChart(overallCtx1, overallQuestion1Data, 1);
+        var overallChart2 = createChart(overallCtx2, overallQuestion2Data, 2);
+        var overallChart3 = createChart(overallCtx3, overallQuestion3Data, 3);
+        var overallChart4 = createChart(overallCtx4, overallQuestion4Data, 4);
+    }
+
+    function formatDataForPieChart(data, questionNum) {
             console.log("formatDataForPieChart called with questionNum:", questionNum);
             var labels;
             switch (questionNum) {
@@ -173,26 +192,7 @@
                 hoverBorderColor: '#000000',
             }],
             percentages: percentages
-            };
-        }
-
-        console.log("Creating daily charts");
-        var dailyChart1 = createChart(dailyCtx1, dailyQuestion1Data, 1);
-        var dailyChart2 = createChart(dailyCtx2, dailyQuestion2Data, 2);
-        var dailyChart3 = createChart(dailyCtx3, dailyQuestion3Data, 3);
-        var dailyChart4 = createChart(dailyCtx4, dailyQuestion4Data, 4);
-
-        console.log("Creating monthly charts");
-        var monthlyChart1 = createChart(monthlyCtx1, monthlyQuestion1Data, 1);
-        var monthlyChart2 = createChart(monthlyCtx2, monthlyQuestion2Data, 2);
-        var monthlyChart3 = createChart(monthlyCtx3, monthlyQuestion3Data, 3);
-        var monthlyChart4 = createChart(monthlyCtx4, monthlyQuestion4Data, 4);
-
-        console.log("Creating overall charts");
-        var overallChart1 = createChart(overallCtx1, overallQuestion1Data, 1);
-        var overallChart2 = createChart(overallCtx2, overallQuestion2Data, 2);
-        var overallChart3 = createChart(overallCtx3, overallQuestion3Data, 3);
-        var overallChart4 = createChart(overallCtx4, overallQuestion4Data, 4);
+        };
     }
 
     function createChart(ctx, data, questionNum) {
