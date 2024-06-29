@@ -2,7 +2,8 @@
 .emotion-distribution-container {
     max-width: 1200px; /* コンテナの最大幅を設定 */
     margin: 0 auto; /* 中央に配置 */
-    padding: 20px; /* パディングを追加 */
+    padding: 120px 20px 20px 20px; /* パディングを追加 */
+
   }
 
   .emotion-distribution-graphs-title {

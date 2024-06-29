@@ -1,11 +1,11 @@
 <% provide(:title, 'クラスの日記選択') %>
 
 <div class="class-selection-page">
-  <h1 class="page-title">クラスの日記選択</h1>
-  <%= link_to 'さいしょに もどる', authenticated_root_path, class: 'back-link button-link' %>
-  <div class="class-list">
+  <h1 class="class-selection-page-title">クラスの日記選択</h1>
+  <%= link_to 'さいしょに もどる', authenticated_root_path, class: 'class-selection-back-link class-selection-button-link' %>
+  <div class="class-selection-class-list">
     <% @classes.each do |grade_class| %>
-      <%= link_to "#{grade_class.grade}年#{grade_class.class_num}組", class_diary_path(grade_class), class: 'class-link' %>
+      <%= link_to "#{grade_class.grade}年#{grade_class.class_num}組", class_diary_path(grade_class), class: 'class-selection-class-link' %>
     <% end %>
   </div>
 </div>

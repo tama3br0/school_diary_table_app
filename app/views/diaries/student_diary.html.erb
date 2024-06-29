@@ -1,16 +1,16 @@
 <% provide(:title, '過去の日記一覧') %>
 
 <div class="student-diary-page">
-  <h1 class="page-title"><%= display_user_info(@student) %>の日記一覧</h1>
-  <div class="month-navigation">
-    <%= link_to '前の月', student_diary_path(@student, date: @previous_month), class: 'button' if @previous_month %>
-    <span class="date-field"><%= @date.strftime('%Y年%-m月') %></span>
-    <%= link_to '次の月', student_diary_path(@student, date: @next_month), class: 'button' if @next_month %>
-  </div>
-  <%= link_to 'さいしょに もどる', authenticated_root_path, class: 'back-link button-link' %>
-  <%= link_to 'クラス選択', class_selection_path, class: 'back-link button-link' %>
+    <h1 class="student-diary-page-title"><%= display_user_info(@student) %>の日記一覧</h1>
+    <div class="month-navigation">
+        <%= link_to '前の月', student_diary_path(@student, date: @previous_month), class: 'button' if @previous_month %>
+        <span class="date-field"><%= @date.strftime('%Y年%-m月') %></span>
+        <%= link_to '次の月', student_diary_path(@student, date: @next_month), class: 'button' if @next_month %>
+    </div>
+    <%= link_to 'さいしょに もどる', authenticated_root_path, class: 'student-diary-back-link student-diary-button-link' %>
+    <%= link_to 'クラス選択', class_selection_path, class: 'student-diary-back-link student-diary-button-link' %>
 
-  <table class="diary-table">
+  <table class="student-diary-table">
     <thead>
       <tr>
         <th>日付</th>

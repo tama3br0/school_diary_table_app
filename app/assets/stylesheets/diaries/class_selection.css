@@ -2,9 +2,10 @@
 
 .class-selection-page {
     padding: 20px;
+    margin-top: 120px;
 }
 
-.class-selection-page .page-title {
+.class-selection-page-title {
     color: #333;
     font-size: 2em;
     font-weight: bold;
@@ -12,7 +13,7 @@
     margin: 20px 0;
 }
 
-.class-selection-page .back-link {
+.class-selection-back-link {
     display: block;
     text-align: center;
     margin: 10px 0;
@@ -20,11 +21,11 @@
     text-decoration: none;
 }
 
-.class-selection-page .back-link:hover {
+.class-selection-back-link:hover {
     text-decoration: underline;
 }
 
-.class-selection-page .class-list {
+.class-selection-class-list {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -34,7 +35,7 @@
     border-radius: 10px;
 }
 
-.class-selection-page .class-link {
+.class-selection-class-link {
     margin: 10px;
     padding: 10px 20px;
     background-color: #007bff; /* 背景色 */
@@ -49,11 +50,11 @@
     text-align: center;
 }
 
-.class-selection-page .class-link:hover {
+.class-selection-class-link:hover {
     background-color: #0056b3; /* ホバー時の背景色を少し暗くする */
 }
 
-.button-link {
+.class-selection-button-link {
     display: inline-block;
     padding: 10px 20px;
     font-size: 1em;
@@ -67,6 +68,6 @@
     cursor: pointer;
 }
 
-.button-link:hover {
+.class-selection-button-link:hover {
     background-color: #0056b3;
 }

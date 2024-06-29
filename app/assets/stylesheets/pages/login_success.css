@@ -7,7 +7,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 480px;
+    padding-top: 120px;
+    min-width: 900px;
+}
+
+.login-success-set {
+    margin: 0 auto;
 }
 
 .login-success-title {

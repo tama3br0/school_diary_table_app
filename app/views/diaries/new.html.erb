@@ -1,39 +1,39 @@
 <% provide(:title, 'にっきをかくページ') %>
 
 <div class="new-diary-page">
-  <h1>にっきをかく</h1>
+    <h1>にっきをかく</h1>
 
-  <div id="flash_messages">
-    <%= render 'layouts/flash' %>
-  </div>
-
-  <%= form_with model: @diary, local: true, html: { class: 'new-diary-form', data: { turbo: false } } do |f| %>
-    <div class="new-date-field">
-      <%= f.hidden_field :date, value: Date.today %>
-      <label>ひづけ</label>
-      <span><%= "#{Date.today.year}ねん#{Date.today.month}がつ#{Date.today.day}にち" %></span>
+    <div id="flash_messages">
+        <%= render 'layouts/flash' %>
     </div>
 
-    <% @questions.each do |question| %>
-      <div class="new-question-container">
-        <h3><%= question[:text] %></h3>
-        <div class="new-emotions-container">
-          <% question[:emotions].each do |emotion| %>
-            <div class="new-emotion-item">
-              <%= radio_button_tag "answers[#{question[:question_num]}][emotion_num]", emotion[:emotion_num], false, id: "answers_#{question[:question_num]}_#{emotion[:emotion_num]}", class: "new-emotion-radio" %>
-              <%= label_tag "answers_#{question[:question_num]}_#{emotion[:emotion_num]}" do %>
-                <%= image_tag emotion[:image_url], alt: emotion[:text], class: "new-emotion-image" %>
-                <span class="new-emotion-text"><%= emotion[:text] %></span>
-              <% end %>
-              <%= hidden_field_tag "answers[#{question[:question_num]}][question_num]", question[:question_num] %>
-            </div>
-          <% end %>
+    <%= form_with model: @diary, local: true, html: { class: 'new-diary-form', data: { turbo: false } } do |f| %>
+        <div class="new-date-field">
+            <%= f.hidden_field :date, value: Date.current %>
+            <label>ひづけ</label>
+            <span><%= "#{Date.current.year}ねん#{Date.current.month}がつ#{Date.current.day}にち" %></span>
         </div>
-      </div>
-    <% end %>
 
-    <div class="new-submit-container">
-      <%= f.submit "ていしゅつする", class: "new-submit-button" %>
-    </div>
-  <% end %>
+        <% @questions.each do |question| %>
+            <div class="new-question-container">
+                <h3><%= question[:text] %></h3>
+                <div class="new-emotions-container">
+                    <% question[:emotions].each do |emotion| %>
+                        <div class="new-emotion-item">
+                            <%= radio_button_tag "answers[#{question[:question_num]}][emotion_num]", emotion[:emotion_num], false, id: "answers_#{question[:question_num]}_#{emotion[:emotion_num]}", class: "new-emotion-radio" %>
+                            <%= label_tag "answers_#{question[:question_num]}_#{emotion[:emotion_num]}" do %>
+                                <%= image_tag emotion[:image_url], alt: emotion[:text], class: "new-emotion-image" %>
+                                <span class="new-emotion-text"><%= emotion[:text] %></span>
+                            <% end %>
+                            <%= hidden_field_tag "answers[#{question[:question_num]}][question_num]", question[:question_num] %>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        <% end %>
+
+        <div class="new-submit-container">
+            <%= f.submit "ていしゅつする", class: "new-submit-button" %>
+        </div>
+    <% end %>
 </div>

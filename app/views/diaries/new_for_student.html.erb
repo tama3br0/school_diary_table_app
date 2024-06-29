@@ -1,44 +1,44 @@
 <% provide(:title, '日記を代わりに作成') %>
 
 <div class="new-for-student-diary-page">
-  <h1 class="page-title">
-    <%= @student.grade_class.grade %>年<%= @student.grade_class.class_num %>組<%= sprintf('%02d', @student.student_num) %>番さんの日記の新規作成
-  </h1>
+    <h1 class="page-title">
+        <%= @student.grade_class.grade %>年<%= @student.grade_class.class_num %>組<%= sprintf('%02d', @student.student_num) %>番さんの日記の新規作成
+    </h1>
 
-  <div id="flash_messages">
-    <% if flash[:notice] %>
-      <p class="notice"><%= flash[:notice] %></p>
-    <% elsif flash[:alert] %>
-      <p class="alert"><%= flash[:alert] %></p>
-    <% end %>
-  </div>
-
-  <%= form_with url: create_for_student_diaries_path(student_id: @student.id), method: :post, class: 'new-for-student-diary-form' do |f| %>
-    <div class="new-for-student-date-field">
-      <%= f.label :date, '日付' %>
-      <%= f.date_field :date, value: @date %>
+    <div id="flash_messages">
+        <% if flash[:notice] %>
+            <p class="notice"><%= flash[:notice] %></p>
+        <% elsif flash[:alert] %>
+            <p class="alert"><%= flash[:alert] %></p>
+        <% end %>
     </div>
 
-    <% @questions.each do |question| %>
-      <div class="new-for-student-question-container">
-        <h3><%= question[:text] %></h3>
-        <div class="new-for-student-emotions-container">
-          <% question[:emotions].each do |emotion| %>
-            <div class="new-for-student-emotion-item">
-              <%= radio_button_tag "answers[#{question[:question_num]}][emotion_num]", emotion[:emotion_num], false, id: "answers_#{question[:question_num]}_#{emotion[:emotion_num]}", class: "new-emotion-radio" %>
-              <%= label_tag "answers_#{question[:question_num]}_#{emotion[:emotion_num]}" do %>
-                <%= image_tag emotion[:image_url], alt: emotion[:text], class: "new-emotion-image" %>
-                <span class="new-emotion-text"><%= emotion[:text] %></span>
-              <% end %>
-              <%= hidden_field_tag "answers[#{question[:question_num]}][question_num]", question[:question_num] %>
-            </div>
-          <% end %>
+    <%= form_with url: create_for_student_diaries_path(student_id: @student.id), method: :post, class: 'new-for-student-diary-form' do |f| %>
+        <div class="new-for-student-date-field">
+            <%= f.label :date, '日付' %>
+            <%= f.date_field :date, value: @date %>
         </div>
-      </div>
-    <% end %>
 
-    <div class="new-for-student-submit-container">
-      <%= f.submit '日記を代わりに提出', class: 'new-for-student-submit-button' %>
-    </div>
-  <% end %>
+        <% @questions.each do |question| %>
+            <div class="new-for-student-question-container">
+                <h3><%= question[:text] %></h3>
+                <div class="new-for-student-emotions-container">
+                    <% question[:emotions].each do |emotion| %>
+                        <div class="new-for-student-emotion-item">
+                            <%= radio_button_tag "answers[#{question[:question_num]}][emotion_num]", emotion[:emotion_num], false, id: "answers_#{question[:question_num]}_#{emotion[:emotion_num]}", class: "new-emotion-radio" %>
+                            <%= label_tag "answers_#{question[:question_num]}_#{emotion[:emotion_num]}" do %>
+                                <%= image_tag emotion[:image_url], alt: emotion[:text], class: "new-emotion-image" %>
+                                <span class="new-emotion-text"><%= emotion[:text] %></span>
+                            <% end %>
+                            <%= hidden_field_tag "answers[#{question[:question_num]}][question_num]", question[:question_num] %>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        <% end %>
+
+        <div class="new-for-student-submit-container">
+            <%= f.submit '日記を代わりに提出', class: 'new-for-student-submit-button' %>
+        </div>
+    <% end %>
 </div>

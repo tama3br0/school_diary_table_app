@@ -1,17 +1,19 @@
 <% provide(:title, 'ダッシュボード') %>
 <main class="login-success-container">
-    <h1 class="login-success-title">
-        <%= display_user_greeting(user_info(current_user)) %>
-    </h1>
-    <div id="flash_messages">
-        <%= render 'layouts/flash' %>
-    </div>
+    <div class="login-success-set">
+        <h1 class="login-success-title">
+            <%= display_user_greeting(user_info(current_user)) %>
+        </h1>
+        <div id="flash_messages">
+            <%= render 'layouts/flash' %>
+        </div>
 
-    <div class="diary-buttons">
-        <%= link_to 'にっきをかく', new_diary_path, class: 'diary-button write_diary_button' %>
-        <% if user_info(current_user)[:role] == 'teacher' %>
-            <%= link_to 'にっきをみる', class_selection_path, class: 'diary-button show_diary_button' %>
-        <% end %>
+        <div class="diary-buttons">
+            <%= link_to 'にっきをかく', new_diary_path, class: 'diary-button write_diary_button' %>
+            <% if user_info(current_user)[:role] == 'teacher' %>
+                <%= link_to 'にっきをみる', class_selection_path, class: 'diary-button show_diary_button' %>
+            <% end %>
+        </div>
     </div>
 
     <div id="calendar" class="calendar">

@@ -1,29 +1,29 @@
 <% provide(:title, 'にっきをよむページ') %>
 
 <div class="diary-page">
-  <h1>にっきをよむ</h1>
-  <div class="day-navigation">
-    <%= link_to 'まえの ひ', diary_path(date: @previous_day.date), class: 'button' if @previous_day %>
-    <span class="date-field"><%= @date.strftime('%Yねん%-mがつ%-dにち') %> (<%= @date.strftime('%A').gsub('Sunday', 'にち').gsub('Monday', 'げつ').gsub('Tuesday', 'か').gsub('Wednesday', 'すい').gsub('Thursday', 'もく').gsub('Friday', 'きん').gsub('Saturday', 'ど') %>)</span>
-    <%= link_to 'つぎの ひ', diary_path(date: @next_day.date), class: 'button' if @next_day %>
-  </div>
+    <h1>にっきをよむ</h1>
+    <div class="day-navigation">
+        <%= link_to 'まえの ひ', diary_path(date: @previous_day.date), class: 'button' if @previous_day %>
+        <span class="date-field"><%= @date.strftime('%Yねん%-mがつ%-dにち') %> (<%= @date.strftime('%A').gsub('Sunday', 'にち').gsub('Monday', 'げつ').gsub('Tuesday', 'か').gsub('Wednesday', 'すい').gsub('Thursday', 'もく').gsub('Friday', 'きん').gsub('Saturday', 'ど') %>)</span>
+        <%= link_to 'つぎの ひ', diary_path(date: @next_day.date), class: 'button' if @next_day %>
+    </div>
 
-  <div class="diary-text-container">
-    <% display_order = [4, 3, 2, 1] %>
-    <% display_order.each do |question_num| %>
-      <% diary = @diaries.find { |d| d.question_num == question_num } %>
-      <% if diary %>
-        <div class="diary-column">
-          <div class="diary-text vertical-text">
-            <%= generate_diary_text_with_emotions(diary).html_safe %>
-          </div>
-          <div class="emotion-image">
-            <%= display_emotion_image(diary).html_safe %>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
-  </div>
+    <div class="diary-text-container">
+        <% display_order = [4, 3, 2, 1] %>
+        <% display_order.each do |question_num| %>
+            <% diary = @diaries.find { |d| d.question_num == question_num } %>
+            <% if diary %>
+                <div class="diary-column">
+                    <div class="diary-text vertical-text">
+                        <%= generate_diary_text_with_emotions(diary).html_safe %>
+                    </div>
+                    <div class="emotion-image">
+                        <%= display_emotion_image(diary).html_safe %>
+                    </div>
+                </div>
+            <% end %>
+        <% end %>
+    </div>
 
-  <%= link_to 'さいしょに もどる', authenticated_root_path, class: 'button' %>
+    <%= link_to 'さいしょに もどる', authenticated_root_path, class: 'button' %>
 </div>
