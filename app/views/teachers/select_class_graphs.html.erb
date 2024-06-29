@@ -1,7 +1,5 @@
 <!-- app/views/teachers/select_class_graphs.html.erb -->
 <% provide(:title, 'グラフ化するクラス選択ページ') %>
-
-
 <div class="select-class-page">
   <h1 class="page-title">グラフで見る クラス選択</h1>
   <%= link_to 'さいしょに もどる', authenticated_root_path, class: 'back-link button-link' %>
@@ -9,8 +7,10 @@
   <ul class="class-list">
     <% @grade_classes.each do |grade_class| %>
       <li>
-        <%= link_to "#{grade_class.grade}年#{grade_class.class_num}組", emotion_graphs_path(grade_class), class: 'class-link' %>
+        <%= link_to "#{grade_class.grade}年#{grade_class.class_num}組", select_type_graphs_path(grade_class.id), class: 'class-link' %>
       </li>
     <% end %>
   </ul>
 </div>
+
+

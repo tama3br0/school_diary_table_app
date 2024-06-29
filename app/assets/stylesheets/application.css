@@ -17,6 +17,7 @@
  *= require teachers/select_class
  *= require teachers/student_list
  *= require teachers/emotion_distribution
+ *= require teachers/emotion_and_select_graphs
  */
 
  body {

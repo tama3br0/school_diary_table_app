@@ -1,0 +1,18 @@
+<!-- teachers/select_type_graphs.html.erb -->
+<% provide(:title, 'グラフのタイプ選択') %>
+<div class="select-type-container">
+  <h1 class="select-type-title">タイプ選択 - <%= @grade_class.grade %>年<%= @grade_class.class_num %>組</h1>
+  <%= link_to 'クラス選択に戻る', select_class_graphs_path, class: 'btn btn-secondary' %>
+
+  <ul class="select-type-list">
+    <li>
+      <%= link_to '日別', select_date_graphs_path(@grade_class.id), class: 'select-type-link' %>
+    </li>
+    <li>
+      <%= link_to '月別', select_month_graphs_path(@grade_class.id), class: 'select-type-link' %>
+    </li>
+    <li>
+      <%= link_to '統計', emotion_overall_graphs_path(@grade_class.id), class: 'select-type-link' %>
+    </li>
+  </ul>
+</div>

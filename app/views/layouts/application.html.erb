@@ -6,8 +6,12 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/moment@2.29.1', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/chart.js', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.0', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
   <link rel="icon" type="image/png" href="https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/favicon-logo.png">
 </head>
 
@@ -16,9 +20,5 @@
         <%= render 'layouts/header', school_code: current_user.grade_class&.school_code %>
     <% end %>
     <%= yield %>
-    <%= javascript_importmap_tags %>
-    <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/moment@2.29.1' %>
-    <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/chart.js' %>
-    <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.0' %>
 </body>
 </html>

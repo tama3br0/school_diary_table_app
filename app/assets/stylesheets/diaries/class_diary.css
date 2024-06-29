@@ -33,13 +33,13 @@
     table-layout: fixed; /* 各カラムの幅を固定 */
 }
 
-.class-diary-table th, .class-diary-page .diary-table td {
+.class-diary-table th, .class-diary-table td {
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center; /* テキストと画像の中央揃え */
     background-color: #fff; /* カラムの背景色 */
     color: #000; /* テキストの色 */
-    font-size: 0.9em; /* 全体の文字サイズを一回り小さく */
+    font-size: 0.7em; /* 全体の文字サイズを一回り小さく */
     word-wrap: break-word; /* テキストがカラムの幅を超えた場合に折り返す */
 }
 

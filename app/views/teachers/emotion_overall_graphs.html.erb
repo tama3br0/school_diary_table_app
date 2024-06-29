@@ -1,0 +1,126 @@
+<!-- teachers/emotion_overall_graphs.html.erb -->
+<% provide(:title, '統計円グラフ') %>
+<div class="emotion-graphs-container">
+  <h1 class="emotion-graphs-title">統計円グラフ - <%= @grade_class.grade %>年<%= @grade_class.class_num %>組</h1>
+
+  <div class="navigation-buttons">
+    <%= link_to 'タイプ選択に戻る', select_type_graphs_path(@grade_class.id), class: 'btn btn-secondary' %>
+    <%= link_to 'クラス選択に戻る', select_class_graphs_path, class: 'btn btn-secondary' %>
+  </div>
+  <h2 class="emotion-graphs-tab-title">統計の分布</h2>
+  <div class="emotion-graphs-chart-row">
+    <div class="emotion-graphs-chart-container">
+      <h3 class="emotion-graphs-chart-title">学校は、楽しかったですか？</h3>
+      <canvas class="emotion-graphs-canvas" id="overallQuestion1Chart" width="400" height="400"></canvas>
+    </div>
+    <div class="emotion-graphs-chart-container">
+      <h3 class="emotion-graphs-chart-title">勉強は、よく分かりましたか？</h3>
+      <canvas class="emotion-graphs-canvas" id="overallQuestion2Chart" width="400" height="400"></canvas>
+    </div>
+    <div class="emotion-graphs-chart-container">
+      <h3 class="emotion-graphs-chart-title">休み時間は、楽しく遊べましたか？</h3>
+      <canvas class="emotion-graphs-canvas" id="overallQuestion3Chart" width="400" height="400"></canvas>
+    </div>
+    <div class="emotion-graphs-chart-container">
+      <h3 class="emotion-graphs-chart-title">給食は、残さず食べられましたか？</h3>
+      <canvas class="emotion-graphs-canvas" id="overallQuestion4Chart" width="400" height="400"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+  var chartInstances = {};
+
+  document.addEventListener('turbo:load', function() {
+    renderCharts();
+
+    function renderCharts() {
+      var overallCtx1 = document.getElementById('overallQuestion1Chart')?.getContext('2d');
+      var overallCtx2 = document.getElementById('overallQuestion2Chart')?.getContext('2d');
+      var overallCtx3 = document.getElementById('overallQuestion3Chart')?.getContext('2d');
+      var overallCtx4 = document.getElementById('overallQuestion4Chart')?.getContext('2d');
+
+      var overallQuestion1Data = <%= @overall_graphs[:question1].to_json.html_safe %>;
+      var overallQuestion2Data = <%= @overall_graphs[:question2].to_json.html_safe %>;
+      var overallQuestion3Data = <%= @overall_graphs[:question3].to_json.html_safe %>;
+      var overallQuestion4Data = <%= @overall_graphs[:question4].to_json.html_safe %>;
+
+      destroyChartIfExists('overallQuestion1Chart');
+      destroyChartIfExists('overallQuestion2Chart');
+      destroyChartIfExists('overallQuestion3Chart');
+      destroyChartIfExists('overallQuestion4Chart');
+
+      if (overallCtx1) chartInstances['overallQuestion1Chart'] = createChart(overallCtx1, overallQuestion1Data, 1);
+      if (overallCtx2) chartInstances['overallQuestion2Chart'] = createChart(overallCtx2, overallQuestion2Data, 2);
+      if (overallCtx3) chartInstances['overallQuestion3Chart'] = createChart(overallCtx3, overallQuestion3Data, 3);
+      if (overallCtx4) chartInstances['overallQuestion4Chart'] = createChart(overallCtx4, overallQuestion4Data, 4);
+    }
+
+    function destroyChartIfExists(chartId) {
+      if (chartInstances[chartId]) {
+        chartInstances[chartId].destroy();
+        chartInstances[chartId] = null;
+      }
+    }
+
+    function formatDataForPieChart(data, questionNum) {
+      var labels;
+      switch (questionNum) {
+        case 1:
+        case 3:
+          labels = ['とても たのしかった', 'たのしかった', 'すこしだけ たのしかった', 'たのしくなかった'];
+          break;
+        case 2:
+          labels = ['とても よくわかった', 'よくわかった', 'すこしだけ わかった', 'ぜんぜん わからなかった'];
+          break;
+        case 4:
+          labels = ['ぜんぶたべて おかわりもした', 'ぜんぶたべた', 'へらしたけれど ぜんぶたべた', 'のこしてしまった'];
+          break;
+      }
+      var backgroundColors = ['#FF6384', '#4BC0C0', '#FFCE56', '#36A2EB'];
+
+      var counts = [data[4] || 0, data[3] || 0, data[2] || 0, data[1] || 0];
+      var total = counts.reduce((a, b) => a + b, 0);
+      var percentages = counts.map(count => (count / total * 100).toFixed(1) + '%');
+
+      return {
+        labels: labels,
+        datasets: [{
+          data: counts,
+          backgroundColor: backgroundColors,
+          borderWidth: 1,
+          borderColor: '#ffffff',
+          hoverBorderColor: '#000000',
+        }],
+        percentages: percentages
+      };
+    }
+
+    function createChart(ctx, data, questionNum) {
+      var formattedData = formatDataForPieChart(data, questionNum);
+      return new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: formattedData.labels,
+          datasets: formattedData.datasets
+        },
+        options: {
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItem, data) {
+                var label = data.labels[tooltipItem.index];
+                var value = data.datasets[0].data[tooltipItem.index];
+                var percentage = formattedData.percentages[tooltipItem.index];
+                return label + ': ' + value + ' (' + percentage + ')';
+              }
+            }
+          },
+          animation: {
+            animateScale: true,
+            animateRotate: true
+          }
+        }
+      });
+    }
+  });
+</script>

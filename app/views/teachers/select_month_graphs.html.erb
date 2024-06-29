@@ -1,0 +1,20 @@
+<!-- teachers/select_month_graphs.html.erb -->
+<% provide(:title, 'グラフの月選択') %>
+<div class="select-month-container">
+  <h1 class="select-month-title">月選択 - <%= @grade_class.grade %>年<%= @grade_class.class_num %>組</h1>
+  <%= link_to 'タイプ選択に戻る', select_type_graphs_path(@grade_class.id), class: 'btn btn-secondary' %>
+  <%= link_to 'クラス選択に戻る', select_class_graphs_path, class: 'btn btn-secondary' %>
+
+  <div class="navigation-buttons">
+    <%= link_to '前の月', select_month_graphs_path(@grade_class, start_month: @start_month - 1.month), class: 'prev-month' %>
+    <%= link_to '次の月', select_month_graphs_path(@grade_class, start_month: @start_month + 1.month), class: 'next-month' %>
+  </div>
+
+  <ul class="select-month-list">
+    <% (@start_month..@end_month).map(&:beginning_of_month).uniq.each do |month| %>
+      <li>
+        <%= link_to month.strftime('%Y-%m'), emotion_monthly_graphs_path(@grade_class, date: month, tab: 'monthly'), class: 'select-month-link' %>
+      </li>
+    <% end %>
+  </ul>
+</div>

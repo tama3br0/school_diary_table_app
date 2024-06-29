@@ -42,7 +42,12 @@ Rails.application.routes.draw do
 
         # グラフ化
         # get 'student_diary_graph/:id',          to: 'teachers#student_diary_graph',   as: 'student_diary_graph'
-        get 'teacher/select_class_graphs',      to: 'teachers#select_class_graphs',   as: 'select_class_graphs'
-        get 'teacher/emotion_graphs/:id', to: 'teachers#emotion_graphs',  as: 'emotion_graphs'
+        get 'teacher/select_class_graphs',       to: 'teachers#select_class_graphs',   as: 'select_class_graphs'
+        get 'teacher/select_type_graphs/:id',    to: 'teachers#select_type_graphs',    as: 'select_type_graphs'
+        get 'teacher/select_date_graphs/:id',    to: 'teachers#select_date_graphs',    as: 'select_date_graphs'
+        get 'teacher/select_month_graphs/:id',   to: 'teachers#select_month_graphs',   as: 'select_month_graphs'
+        get 'teacher/emotion_daily_graphs/:id',  to: 'teachers#emotion_daily_graphs',  as: 'emotion_daily_graphs'
+        get 'teacher/emotion_monthly_graphs/:id',to: 'teachers#emotion_monthly_graphs',as: 'emotion_monthly_graphs'
+        get 'teacher/emotion_overall_graphs/:id',to: 'teachers#emotion_overall_graphs',as: 'emotion_overall_graphs'
     end
 end

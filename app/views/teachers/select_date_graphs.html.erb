@@ -1,0 +1,20 @@
+<!-- teachers/select_date_graphs.html.erb -->
+<% provide(:title, 'グラフの日付選択') %>
+<div class="select-date-container">
+  <h1 class="select-date-title">日付選択 - <%= @grade_class.grade %>年<%= @grade_class.class_num %>組</h1>
+  <%= link_to 'タイプ選択に戻る', select_type_graphs_path(@grade_class.id), class: 'btn btn-secondary' %>
+  <%= link_to 'クラス選択に戻る', select_class_graphs_path, class: 'btn btn-secondary' %>
+
+  <div class="navigation-buttons">
+    <%= link_to '前の週', select_date_graphs_path(@grade_class, start_date: @start_date - 1.week), class: 'prev-week' %>
+    <%= link_to '次の週', select_date_graphs_path(@grade_class, start_date: @start_date + 1.week), class: 'next-week' %>
+  </div>
+
+  <ul class="select-date-list">
+    <% (@start_date..@end_date).each do |date| %>
+      <li>
+        <%= link_to date.strftime('%Y年 %m月 %d日'), emotion_daily_graphs_path(@grade_class, date: date, tab: 'daily'), class: 'select-date-link' %>
+      </li>
+    <% end %>
+  </ul>
+</div>

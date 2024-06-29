@@ -1,0 +1,132 @@
+<!-- teachers/emotion_daily_graphs.html.erb -->
+<% provide(:title, '日別円グラフ') %>
+<div class="emotion-graphs-container">
+  <h1 class="emotion-graphs-title">日別円グラフ - <%= @grade_class.grade %>年<%= @grade_class.class_num %>組</h1>
+
+  <div class="navigation-buttons">
+    <p>表示日付: <%= @date %></p>
+    <%= link_to '日付選択に戻る', select_date_graphs_path(@grade_class.id), class: 'btn btn-secondary' %>
+    <%= link_to 'タイプ選択に戻る', select_type_graphs_path(@grade_class.id), class: 'btn btn-secondary' %>
+    <%= link_to 'クラス選択に戻る', select_class_graphs_path, class: 'btn btn-secondary' %>
+  </div>
+  <h2 class="emotion-graphs-tab-title">本日の分布</h2>
+  <div class="emotion-graphs-chart-row">
+    <div class="emotion-graphs-chart-container">
+      <h3 class="emotion-graphs-chart-title">学校は、楽しかったですか？</h3>
+      <canvas class="emotion-graphs-canvas" id="dailyQuestion1Chart" width="400" height="400"></canvas>
+    </div>
+    <div class="emotion-graphs-chart-container">
+      <h3 class="emotion-graphs-chart-title">勉強は、よく分かりましたか？</h3>
+      <canvas class="emotion-graphs-canvas" id="dailyQuestion2Chart" width="400" height="400"></canvas>
+    </div>
+    <div class="emotion-graphs-chart-container">
+      <h3 class="emotion-graphs-chart-title">休み時間は、楽しく遊べましたか？</h3>
+      <canvas class="emotion-graphs-canvas" id="dailyQuestion3Chart" width="400" height="400"></canvas>
+    </div>
+    <div class="emotion-graphs-chart-container">
+      <h3 class="emotion-graphs-chart-title">給食は、残さず食べられましたか？</h3>
+      <canvas class="emotion-graphs-canvas" id="dailyQuestion4Chart" width="400" height="400"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+  // グローバルなチャートインスタンスを保持するオブジェクト
+  var chartInstances = {};
+
+  document.addEventListener('turbo:load', function() {
+    // 初期ロード時にグラフを描画
+    renderCharts();
+
+    function renderCharts() {
+      var dailyCtx1 = document.getElementById('dailyQuestion1Chart')?.getContext('2d');
+      var dailyCtx2 = document.getElementById('dailyQuestion2Chart')?.getContext('2d');
+      var dailyCtx3 = document.getElementById('dailyQuestion3Chart')?.getContext('2d');
+      var dailyCtx4 = document.getElementById('dailyQuestion4Chart')?.getContext('2d');
+
+      var dailyQuestion1Data = <%= @daily_graphs[:question1].to_json.html_safe %>;
+      var dailyQuestion2Data = <%= @daily_graphs[:question2].to_json.html_safe %>;
+      var dailyQuestion3Data = <%= @daily_graphs[:question3].to_json.html_safe %>;
+      var dailyQuestion4Data = <%= @daily_graphs[:question4].to_json.html_safe %>;
+
+      // 古いグラフを削除
+      destroyChartIfExists('dailyQuestion1Chart');
+      destroyChartIfExists('dailyQuestion2Chart');
+      destroyChartIfExists('dailyQuestion3Chart');
+      destroyChartIfExists('dailyQuestion4Chart');
+
+      // 新しいグラフを作成
+      if (dailyCtx1) chartInstances['dailyQuestion1Chart'] = createChart(dailyCtx1, dailyQuestion1Data, 1);
+      if (dailyCtx2) chartInstances['dailyQuestion2Chart'] = createChart(dailyCtx2, dailyQuestion2Data, 2);
+      if (dailyCtx3) chartInstances['dailyQuestion3Chart'] = createChart(dailyCtx3, dailyQuestion3Data, 3);
+      if (dailyCtx4) chartInstances['dailyQuestion4Chart'] = createChart(dailyCtx4, dailyQuestion4Data, 4);
+    }
+
+    function destroyChartIfExists(chartId) {
+      if (chartInstances[chartId]) {
+        chartInstances[chartId].destroy();
+        chartInstances[chartId] = null;
+      }
+    }
+
+    function formatDataForPieChart(data, questionNum) {
+      var labels;
+      switch (questionNum) {
+        case 1:
+        case 3:
+          labels = ['とても たのしかった', 'たのしかった', 'すこしだけ たのしかった', 'たのしくなかった'];
+          break;
+        case 2:
+          labels = ['とても よくわかった', 'よくわかった', 'すこしだけ わかった', 'ぜんぜん わからなかった'];
+          break;
+        case 4:
+          labels = ['ぜんぶたべて おかわりもした', 'ぜんぶたべた', 'へらしたけれど ぜんぶたべた', 'のこしてしまった'];
+          break;
+      }
+      var backgroundColors = ['#FF6384', '#4BC0C0', '#FFCE56', '#36A2EB'];
+
+      var counts = [data[4] || 0, data[3] || 0, data[2] || 0, data[1] || 0];
+      var total = counts.reduce((a, b) => a + b, 0);
+      var percentages = counts.map(count => (count / total * 100).toFixed(1) + '%');
+
+      return {
+        labels: labels,
+        datasets: [{
+          data: counts,
+          backgroundColor: backgroundColors,
+          borderWidth: 1,
+          borderColor: '#ffffff',
+          hoverBorderColor: '#000000',
+        }],
+        percentages: percentages
+      };
+    }
+
+    function createChart(ctx, data, questionNum) {
+      var formattedData = formatDataForPieChart(data, questionNum);
+      return new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: formattedData.labels,
+          datasets: formattedData.datasets
+        },
+        options: {
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItem, data) {
+                var label = data.labels[tooltipItem.index];
+                var value = data.datasets[0].data[tooltipItem.index];
+                var percentage = formattedData.percentages[tooltipItem.index];
+                return label + ': ' + value + ' (' + percentage + ')';
+              }
+            }
+          },
+          animation: {
+            animateScale: true,
+            animateRotate: true
+          }
+        }
+      });
+    }
+  });
+</script>
