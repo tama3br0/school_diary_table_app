@@ -43,6 +43,6 @@ Rails.application.routes.draw do
         # グラフ化
         # get 'student_diary_graph/:id',          to: 'teachers#student_diary_graph',   as: 'student_diary_graph'
         get 'teacher/select_class_graphs',      to: 'teachers#select_class_graphs',   as: 'select_class_graphs'
-        get 'teacher/emotion_distribution/:id', to: 'teachers#emotion_distribution',  as: 'emotion_distribution'
+        get 'teacher/emotion_graphs/:id', to: 'teachers#emotion_graphs',  as: 'emotion_graphs'
     end
 end

@@ -26,7 +26,7 @@ class TeachersController < ApplicationController
         @grade_classes = GradeClass.where(school_code: current_user.grade_class.school_code).order(:grade, :class_num)
     end
 
-    def emotion_distribution
+    def emotion_graphs
         @grade_class = GradeClass.find(params[:id])
 
         # 指定されたクラスに属する学生（roleが0）のリストを取得し、student_numの順に並び替えて@studentsインスタンス変数に代入
@@ -38,26 +38,26 @@ class TeachersController < ApplicationController
         # typeにパラメータで渡されたタイプを代入し、指定されていない場合は'daily'をデフォルト
         type = params[:type] || 'daily'
 
-        # Diaryモデルのemotion_distributionメソッドを呼び出して、指定されたクラスの感情分布を取得
-        @daily_distribution = {
-            question1: Diary.emotion_distribution(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 1, :daily, date),
-            question2: Diary.emotion_distribution(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 2, :daily, date),
-            question3: Diary.emotion_distribution(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 3, :daily, date),
-            question4: Diary.emotion_distribution(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 4, :daily, date)
+        # Diaryモデルのemotion_graphsメソッドを呼び出して、指定されたクラスの感情分布を取得
+        @daily_graphs = {
+            question1: Diary.emotion_graphs(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 1, :daily, date),
+            question2: Diary.emotion_graphs(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 2, :daily, date),
+            question3: Diary.emotion_graphs(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 3, :daily, date),
+            question4: Diary.emotion_graphs(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 4, :daily, date)
         }
 
-        @monthly_distribution = {
-            question1: Diary.emotion_distribution(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 1, :monthly, date),
-            question2: Diary.emotion_distribution(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 2, :monthly, date),
-            question3: Diary.emotion_distribution(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 3, :monthly, date),
-            question4: Diary.emotion_distribution(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 4, :monthly, date)
+        @monthly_graphs = {
+            question1: Diary.emotion_graphs(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 1, :monthly, date),
+            question2: Diary.emotion_graphs(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 2, :monthly, date),
+            question3: Diary.emotion_graphs(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 3, :monthly, date),
+            question4: Diary.emotion_graphs(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 4, :monthly, date)
         }
 
-        @overall_distribution = {
-            question1: Diary.emotion_distribution(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 1),
-            question2: Diary.emotion_distribution(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 2),
-            question3: Diary.emotion_distribution(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 3),
-            question4: Diary.emotion_distribution(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 4)
+        @overall_graphs = {
+            question1: Diary.emotion_graphs(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 1),
+            question2: Diary.emotion_graphs(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 2),
+            question3: Diary.emotion_graphs(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 3),
+            question4: Diary.emotion_graphs(@grade_class.school_code, @grade_class.grade, @grade_class.class_num, 4)
         }
 
         @previous_date = @grade_class.users.joins(:diaries).where('diaries.date < ?', date).order('diaries.date DESC').pluck(:date).first
@@ -65,7 +65,7 @@ class TeachersController < ApplicationController
 
         respond_to do |format|
             format.html
-            format.json { render json: { daily: @daily_distribution, monthly: @monthly_distribution, overall: @overall_distribution, previous_date: @previous_date, next_date: @next_date } }
+            format.json { render json: { daily: @daily_graphs, monthly: @monthly_graphs, overall: @overall_graphs, previous_date: @previous_date, next_date: @next_date } }
         end
     end
 

@@ -25,7 +25,7 @@ class Diary < ApplicationRecord
     end
 
     # emotionの分布を集計するグラフ用のメソッド
-    def self.emotion_distribution(school_code, grade, class_num, question_num, period = nil, date = Date.current)
+    def self.emotion_graphs(school_code, grade, class_num, question_num, period = nil, date = Date.current)
         # diaries テーブルを users テーブルを経由しつつgrade_classes テーブルと結合
                 # 指定された school_code、grade、class_num に一致する grade_classes を持つ diaries レコードをフィルタリング
                 # 指定された question_num に一致する diaries レコードをさらにフィルタリング

@@ -1,30 +1,30 @@
-/* app/assets/stylesheets/emotion_distribution.css */
-.emotion-distribution-container {
+/* app/assets/stylesheets/emotion_graphs.css */
+.emotion-graphs-container {
     max-width: 1200px; /* コンテナの最大幅を設定 */
     margin: 0 auto; /* 中央に配置 */
     padding: 120px 20px 20px 20px; /* パディングを追加 */
 
   }
 
-  .emotion-distribution-graphs-title {
+  .emotion-graphs-title {
       color: #333;
   }
 
-  .emotion-distribution-tab-title {
+  .emotion-graphs-tab-title {
       color: #333;
   }
 
-  .emotion-distribution-chart-title {
+  .emotion-graphs-chart-title {
       color: #333;
   }
 
-  .emotion-distribution-tabs {
+  .emotion-graphs-tabs {
       overflow: hidden;
       margin-bottom: 20px;
       text-align: center;
   }
 
-  .emotion-distribution-tablink {
+  .emotion-graphs-tablink {
       background-color: inherit;
       display: inline-block;
       color: white;
@@ -38,15 +38,15 @@
       margin-left: 16px;
   }
 
-  .emotion-distribution-tablink:hover {
+  .emotion-graphs-tablink:hover {
       background-color: #0056b3;
   }
 
-  .emotion-distribution-tablink.active {
+  .emotion-graphs-tablink.active {
       background-color: #0056b3;
   }
 
-  .emotion-distribution-tabcontent {
+  .emotion-graphs-tabcontent {
       display: none;
       padding: 20px;
       border-top: none;
@@ -55,20 +55,20 @@
       margin-top: 80px;
   }
 
-  .emotion-distribution-chart-row {
+  .emotion-graphs-chart-row {
       display: flex;
       gap: 20px;
       justify-content: space-between; /* 均等に間隔を空ける */
   }
 
-  .emotion-distribution-chart-container {
+  .emotion-graphs-chart-container {
       flex: 1 1 calc(25% - 20px); /* 幅を調整 */
       display: flex;
       flex-direction: column;
       align-items: center;
   }
 
-  .emotion-distribution-canvas {
+  .emotion-graphs-canvas {
       width: 100% !important;
       height: auto !important;
       max-width: 300px; /* 追加: 最大幅を制限 */

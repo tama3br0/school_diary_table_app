@@ -9,7 +9,7 @@
   <ul class="class-list">
     <% @grade_classes.each do |grade_class| %>
       <li>
-        <%= link_to "#{grade_class.grade}年#{grade_class.class_num}組", emotion_distribution_path(grade_class), class: 'class-link' %>
+        <%= link_to "#{grade_class.grade}年#{grade_class.class_num}組", emotion_graphs_path(grade_class), class: 'class-link' %>
       </li>
     <% end %>
   </ul>
