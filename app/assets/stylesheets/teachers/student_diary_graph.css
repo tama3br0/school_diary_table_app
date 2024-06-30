@@ -45,7 +45,7 @@
       display: none;
       padding: 20px;
       border-top: none;
-      background-color: rgba(255, 255, 255, 0.8); /* 透過性のある白背景 */
+      background: rgba(255, 255, 255, 0.4);
       border-radius: 10px; /* 角を丸める */
       margin-top: 20px; /* 各タブコンテンツの上に余白を追加 */
       color: #000; /* 文字を黒にする */
