@@ -1,7 +1,7 @@
 /* diaries/new.css */
 .new-diary-page {
     font-family: 'Arial', sans-serif;
-    background-color: #f0f8ff;
+    background: rgba(255, 255, 255, 0.4);
     padding: 20px;
     text-align: center;
     margin-top: 120px;  /* 上部の余白を調整 */

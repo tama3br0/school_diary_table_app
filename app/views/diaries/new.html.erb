@@ -10,7 +10,6 @@
     <%= form_with model: @diary, local: true, html: { class: 'new-diary-form', data: { turbo: false } } do |f| %>
         <div class="new-date-field">
             <%= f.hidden_field :date, value: Date.current %>
-            <label>ひづけ</label>
             <span><%= "#{Date.current.year}ねん#{Date.current.month}がつ#{Date.current.day}にち" %></span>
         </div>
 

@@ -103,7 +103,7 @@ class DiariesController < ApplicationController
 
         # 特定の学生（@student）の@dateの月に該当する日記エントリを取得
         # date >= ?で月の初めの日付から、date <= ?で月の終わりの日付までの範囲で日記エントリを検索し、取得した日記エントリを@diariesに格納
-        @diaries = @student.diaries.where('date >= ? AND date <= ?', @date.beginning_of_month, @date.end_of_month)
+        @diaries = @student.diaries.where('date >= ? AND date <= ?', @date.beginning_of_month, @date.end_of_month).order('diaries.date ASC')
 
         @previous_month = @date.prev_month
         @next_month = @date.next_month
