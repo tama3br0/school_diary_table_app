@@ -14,7 +14,7 @@
         </div>
 
         <% @questions.each do |question| %>
-            <div class="new-question-container">
+            <div class="new-question-container" data-question-num="<%= question[:question_num] %>">
                 <h3><%= question[:text] %></h3>
                 <div class="new-emotions-container">
                     <% question[:emotions].each do |emotion| %>
@@ -36,3 +36,29 @@
         </div>
     <% end %>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.querySelector('.new-diary-form');
+    if (form) {
+        form.addEventListener('submit', function(event) {
+            const questions = document.querySelectorAll('.new-question-container');
+            let allAnswered = true;
+
+            questions.forEach(question => {
+                const questionNum = question.dataset.questionNum;
+                const radioButtons = document.querySelectorAll(`input[name="answers[${questionNum}][emotion_num]"]`);
+                const isChecked = Array.from(radioButtons).some(rb => rb.checked);
+                if (!isChecked) {
+                    allAnswered = false;
+                }
+            });
+
+            if (!allAnswered) {
+                event.preventDefault();
+                alert("まだ こたえていない しつもんがあるよ");
+            }
+        });
+    }
+});
+</script>
