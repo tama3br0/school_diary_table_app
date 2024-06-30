@@ -73,7 +73,8 @@
   .select-type-list,
   .class-list {
     list-style-type: none;
-    padding: 0;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.4);
   }
 
   .select-date-link,
