@@ -15,44 +15,40 @@ class DiariesController < ApplicationController
 
         @questions = get_questions_with_emotions
         answers = params[:answers].values
-                # params[:answers] = {
-                #     "0" => { question_num: "1", emotion_num: "2" },
-                #     "1" => { question_num: "2", emotion_num: "3" },
-                #     # その他の回答...
-                #     }
-        successful_save = true
 
-        answers.each do |answer|
-            question_num = answer[:question_num].to_i
-            emotion_num = answer[:emotion_num].to_i
+        if all_questions_answered?(@questions, answers)
+          successful_save = true
+          ActiveRecord::Base.transaction do
+            answers.each do |answer|
+              question_num = answer[:question_num].to_i
+              emotion_num = answer[:emotion_num].to_i
 
-            # @questions配列から、該当するquestion_numを持つ質問を検索
-            question = @questions.find { |q| q[:question_num] == question_num }
-            # 見つかった質問オブジェクトから、該当するemotion_numを持つ感情を検索
-            emotion = question[:emotions].find { |e| e[:emotion_num] == emotion_num }
-            # 該当する感情オブジェクトから、image_urlを取得し、それをanswer_imageに格納
-            answer_image = emotion[:image_url]
+              question = @questions.find { |q| q[:question_num] == question_num }
+              emotion = question[:emotions].find { |e| e[:emotion_num] == emotion_num }
+              answer_image = emotion[:image_url]
 
-            # current_userの関連付けられたdiariesモデルに対して、新しい日記エントリを作成
-            # この日記エントリには、日付（diary_date）、質問番号（question_num）、感情番号（emotion_num）、および感情に関連付けられた画像URL（answer_image）が含まれている
-            diary_entry = current_user.diaries.build(date: diary_date, question_num: question_num, emotion_num: emotion_num, answer_image: answer_image)
+              diary_entry = current_user.diaries.build(date: diary_date, question_num: question_num, emotion_num: emotion_num, answer_image: answer_image)
 
-            if diary_entry.save
-                # diary_entryの保存が成功した場合、current_userに関連付けられたstampsに新しいスタンプを作成
-                # このスタンプは、保存された日記エントリ（diary_entry）に関連付けられ、スタンプ画像のURL（stamp_image）を持つ
+              if diary_entry.save
                 current_user.stamps.create!(diary: diary_entry, stamp_image: 'https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/stamp.png')
-            else
+              else
                 successful_save = false
-                break
+                raise ActiveRecord::Rollback
+              end
             end
-        end
+          end
 
-        if successful_save
+          if successful_save
             redirect_to login_success_path, notice: 'にっきを ていしゅつしました。'
-        else
+          else
             flash.now[:alert] = 'にっきのとうろくにしっぱいしました。もういちどためしてください。'
             @diary = Diary.new(diary_params)
             render :new
+          end
+        else
+          flash.now[:alert] = 'ぜんぶの しつもんに こたえてください。'
+          @diary = Diary.new(diary_params)
+          render :new
         end
     end
 
@@ -186,6 +182,12 @@ class DiariesController < ApplicationController
             rescue ActiveRecord::RecordNotFound
                 redirect_to authenticated_root_path, alert: '指定されたクラスは存在しません。'
             end
+        end
+    end
+
+    def all_questions_answered?(questions, answers)
+        questions.all? do |question|
+          answers.any? { |answer| answer[:question_num].to_i == question[:question_num].to_i && answer[:emotion_num].present? }
         end
     end
 end
