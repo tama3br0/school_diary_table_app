@@ -187,7 +187,7 @@ class DiariesController < ApplicationController
 
     def all_questions_answered?(questions, answers)
         questions.all? do |question|
-          answers.any? { |answer| answer[:question_num].to_i == question[:question_num].to_i && answer[:emotion_num].present? }
+            answers.any? { |answer| answer[:question_num].to_i == question[:question_num].to_i && answer[:emotion_num].present? }
         end
     end
 end
