@@ -1,3 +1,36 @@
+/* フェードインと上下に揺れるアニメーション */
+@keyframes fadeInDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(10px);
+    }
+  }
+
+  .shake {
+    display: inline-block;
+    animation: fadeInDown 2s ease-out, bounce 1.5s infinite alternate; /* フェードインの持続時間を2sに変更 */
+    margin-bottom: 12px;
+ }
+
+  /* 画像矢印のデザイン */
+  .arrow-image {
+    width: 30px; /* 矢印の画像の幅を設定 */
+    vertical-align: middle; /* 矢印がテキストと垂直に揃うように設定 */
+  }
+
 .background-blur {
     position: relative;
     width: 100%;
