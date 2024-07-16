@@ -1,63 +1,61 @@
+# db/seeds.rb
+
 require 'faker'
 
-# Create grade classes if they don't exist
-grade_classes = {}
-[1, 2].each do |school_code|
-  [1, 2].each do |grade|
-    [1, 2, 3].each do |class_num|
-      grade_classes["#{school_code}_#{grade}_#{class_num}"] = GradeClass.find_or_create_by(
-        grade: grade,
-        class_num: class_num,
-        school_code: school_code
-      )
-    end
-  end
+# GradeClassの作成
+grade_class = GradeClass.create!(
+  grade: 1,
+  class_num: 3,
+  school_code: 1
+)
+
+# ユーザーの作成
+users = []
+30.times do |i|
+  users << User.create!(
+    email: "student#{i+1}@example.com",
+    encrypted_password: Devise::Encryptor.digest(User, 'password'),
+    uid: SecureRandom.uuid,
+    role: 0, # student
+    grade_class: grade_class,
+    student_num: i + 1,
+    additional_info_provided: false
+  )
 end
 
-# Define emotion images
+# 日記の作成
 emotions = {
-  4 => "https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/very_smile.png",
-  3 => "https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/smile.png",
-  2 => "https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/normal.png",
-  1 => "https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/shock.png"
+  very_smile: 4,
+  smile: 3,
+  normal: 2,
+  shock: 1
 }
 
-# Create users and diaries
-grade_classes.each do |key, grade_class|
-  (1..30).each do |student_num|
-    begin
-      user = User.find_or_create_by!(
-        email: Faker::Internet.unique.email,
-        uid: SecureRandom.uuid,
-        provider: 'google_oauth2',
-        name: '',  # role=0の場合はnameを空にする
-        role: 0,
-        grade_class: grade_class,
-        student_num: student_num,
-        additional_info_provided: true
-      ) do |u|
-        u.password = Devise.friendly_token[0, 20] # 一時的なランダムなパスワードを設定
-      end
+emotions_images = {
+  very_smile: "https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/very_smile.png",
+  smile: "https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/smile.png",
+  normal: "https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/normal.png",
+  shock: "https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/shock.png"
+}
 
-      # Create diaries if they don't exist
-      (Date.new(2024, 4, 1)..Date.today).each do |date|
-        (1..4).each do |question_num|
-          emotion_num = rand(1..4)
-          unless Diary.exists?(user: user, date: date, question_num: question_num)
-            Diary.create!(
-              user: user,
-              date: date,
-              question_num: question_num,
-              emotion_num: emotion_num,
-              answer_image: emotions[emotion_num] # emotion_numに基づいた画像URLを設定
-            )
-          end
-        end
-      end
-    rescue ActiveRecord::RecordInvalid => e
-      puts "Failed to create user #{student_num} in grade_class #{key}: #{e.record.errors.full_messages.join(', ')}"
-    end
+start_date = Date.new(2024, 4, 1)
+end_date = Date.new(2024, 7, 27)
+
+users.each do |user|
+  (start_date..end_date).each do |date|
+    next if date.saturday? || date.sunday? # 土日を除く
+
+    question_num = rand(1..4)
+    emotion_type = [:very_smile, :smile, :normal, :shock].sample(1, weights: [0.4, 0.4, 0.1, 0.1]).first
+
+    Diary.create!(
+      user: user,
+      date: date,
+      question_num: question_num,
+      emotion_num: emotions[emotion_type],
+      answer_image: emotions_images[emotion_type]
+    )
   end
 end
 
-puts "Dummy data created successfully without deleting existing data."
+puts "ダミーデータを作成できました!"
