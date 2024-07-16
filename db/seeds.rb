@@ -15,7 +15,7 @@ users = []
   begin
     user = User.create!(
       email: "student#{i+1}@example.com",
-      password: 'password', # ここを修正
+      password: 'password',
       uid: SecureRandom.uuid,
       role: 0, # student
       grade_class: grade_class,
@@ -43,6 +43,15 @@ emotions_images = {
   shock: "https://school-diary-app-bucket.s3.ap-northeast-1.amazonaws.com/shock.png"
 }
 
+# 重み付けサンプリング関数
+def weighted_sample(emotions)
+  flat_array = []
+  emotions.each do |emotion, weight|
+    flat_array += [emotion] * weight
+  end
+  flat_array.sample
+end
+
 start_date = Date.new(2024, 4, 1)
 end_date = Date.new(2024, 7, 27)
 
@@ -51,7 +60,7 @@ users.each do |user|
     next if date.saturday? || date.sunday? # 土日を除く
 
     question_num = rand(1..4)
-    emotion_type = [:very_smile, :smile, :normal, :shock].sample(1, weights: [0.4, 0.4, 0.1, 0.1]).first
+    emotion_type = weighted_sample({ very_smile: 4, smile: 4, normal: 1, shock: 1 })
 
     Diary.create!(
       user: user,
