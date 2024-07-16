@@ -15,7 +15,7 @@ users = []
   begin
     user = User.create!(
       email: "student#{i+1}@example.com",
-      encrypted_password: Devise::Encryptor.digest(User, 'password'),
+      password: 'password', # ここを修正
       uid: SecureRandom.uuid,
       role: 0, # student
       grade_class: grade_class,
