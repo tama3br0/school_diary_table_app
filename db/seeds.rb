@@ -24,7 +24,7 @@ users = []
     )
     users << user
   rescue ActiveRecord::RecordInvalid => e
-    puts "ダミーユーザー生成に失敗しました: #{e.message}"
+    puts "ダミーユーザー生成に失敗しました: #{e.record.errors.full_messages.join(', ')}"
   end
 end
 
