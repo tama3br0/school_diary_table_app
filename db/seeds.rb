@@ -4,15 +4,15 @@ require 'faker'
 
 # 既存のシードデータを削除
 User.where(seed: true).destroy_all
-GradeClass.where(seed: true).destroy_all
 
-# GradeClassの作成
-grade_class = GradeClass.create!(
+# GradeClassの取得または作成
+grade_class = GradeClass.find_or_create_by!(
   grade: 1,
   class_num: 3,
-  school_code: 1,
-  seed: true
-)
+  school_code: 1
+) do |gc|
+  gc.seed = true
+end
 
 # ユーザーの作成
 users = []
