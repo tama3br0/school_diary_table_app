@@ -2,11 +2,16 @@
 
 require 'faker'
 
+# 既存のシードデータを削除
+User.where(seed: true).destroy_all
+GradeClass.where(seed: true).destroy_all
+
 # GradeClassの作成
 grade_class = GradeClass.create!(
   grade: 1,
   class_num: 3,
-  school_code: 1
+  school_code: 1,
+  seed: true
 )
 
 # ユーザーの作成
@@ -20,7 +25,8 @@ users = []
       role: 0, # student
       grade_class: grade_class,
       student_num: i + 1,
-      additional_info_provided: false
+      additional_info_provided: false,
+      seed: true
     )
     users << user
   rescue ActiveRecord::RecordInvalid => e
