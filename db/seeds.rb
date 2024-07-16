@@ -65,16 +65,17 @@ users.each do |user|
   (start_date..end_date).each do |date|
     next if date.saturday? || date.sunday? # 土日を除く
 
-    question_num = rand(1..4)
-    emotion_type = weighted_sample({ very_smile: 4, smile: 4, normal: 1, shock: 1 })
+    (1..4).each do |question_num|
+      emotion_type = weighted_sample({ very_smile: 4, smile: 4, normal: 1, shock: 1 })
 
-    Diary.create!(
-      user: user,
-      date: date,
-      question_num: question_num,
-      emotion_num: emotions[emotion_type],
-      answer_image: emotions_images[emotion_type]
-    )
+      Diary.create!(
+        user: user,
+        date: date,
+        question_num: question_num,
+        emotion_num: emotions[emotion_type],
+        answer_image: emotions_images[emotion_type]
+      )
+    end
   end
 end
 
