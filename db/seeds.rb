@@ -12,15 +12,20 @@ grade_class = GradeClass.create!(
 # ユーザーの作成
 users = []
 30.times do |i|
-  users << User.create!(
-    email: "student#{i+1}@example.com",
-    encrypted_password: Devise::Encryptor.digest(User, 'password'),
-    uid: SecureRandom.uuid,
-    role: 0, # student
-    grade_class: grade_class,
-    student_num: i + 1,
-    additional_info_provided: false
-  )
+  begin
+    user = User.create!(
+      email: "student#{i+1}@example.com",
+      encrypted_password: Devise::Encryptor.digest(User, 'password'),
+      uid: SecureRandom.uuid,
+      role: 0, # student
+      grade_class: grade_class,
+      student_num: i + 1,
+      additional_info_provided: false
+    )
+    users << user
+  rescue ActiveRecord::RecordInvalid => e
+    puts "ダミーユーザー生成に失敗しました: #{e.message}"
+  end
 end
 
 # 日記の作成
@@ -58,4 +63,4 @@ users.each do |user|
   end
 end
 
-puts "ダミーデータを作成できました!"
+puts "ダミーデータを生成できました！"
